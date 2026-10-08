@@ -16,7 +16,14 @@ $theme       = get_stylesheet_directory_uri();
 <!-- wp:group {"className":"g-pied","layout":{"type":"default"}} -->
 <div class="wp-block-group g-pied"><!-- wp:group {"className":"g-pied__marque","layout":{"type":"default"}} -->
 <div class="wp-block-group g-pied__marque"><!-- wp:html -->
-<a class="g-pied__logo" href="<?php echo esc_url( home_url( '/' ) ); ?>"><img src="<?php echo esc_url( $theme . '/assets/images/logo-gayrel-blanc-760.png' ); ?>" srcset="<?php echo esc_url( $theme . '/assets/images/logo-gayrel-blanc-760.png' ); ?> 760w, <?php echo esc_url( $theme . '/assets/images/logo-gayrel-blanc.png' ); ?> 1333w" sizes="(min-width: 1900px) 729px, 38vw" width="760" height="207" loading="lazy" decoding="async" alt="Gayrel, façade, menuiserie, aluminium — retour à l’accueil"></a>
+<?php
+// Logo animé (« Animation footer » de la maquette) : les sept facettes du cube s'assemblent à l'arrivée du pied de page.
+// Coordonnées Figma (groupe de 729 × 248,74 px) converties en pourcentages ; le logotype est le logo blanc recadré.
+$l = 729; $h = 248.74;
+$faces = [ [ 114.67, 0, 112.948, 178.475 ], [ 0, 0, 114.672, 178.475 ], [ 0, 108.64, 227.62, 140.107 ], [ 53.46, 104.33, 61.216, 75.873 ], [ 114.67, 78.03, 104.757, 161.662 ], [ 8.62, 76.74, 106.05, 162.955 ], [ 8.62, 12.07, 199.168, 80.345 ] ];
+$pc = fn( $v, $t ) => round( $v / $t * 100, 3 ) . '%';
+?>
+<a class="g-pied__logo" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="Gayrel, façade, menuiserie, aluminium — retour à l’accueil"><span class="g-pied__cube" aria-hidden="true"><?php foreach ( $faces as $i => [ $x, $y, $w, $hh ] ) : ?><img class="g-face g-face--<?php echo $i + 1; ?>" src="<?php echo esc_url( $theme . '/assets/icones/cube/face-' . ( $i + 1 ) . '.svg' ); ?>" alt="" width="<?php echo (int) round( $w ); ?>" height="<?php echo (int) round( $hh ); ?>" style="left:<?php echo $pc( $x, $l ); ?>;top:<?php echo $pc( $y, $h ); ?>;width:<?php echo $pc( $w, $l ); ?>;height:<?php echo $pc( $hh, $h ); ?>"><?php endforeach; ?></span><span class="g-pied__mot" aria-hidden="true" style="left:<?php echo $pc( 255.76, $l ); ?>;top:<?php echo $pc( 33.12, $h ); ?>;width:<?php echo $pc( 473.24, $l ); ?>;height:<?php echo $pc( 182.29, $h ); ?>"><img src="<?php echo esc_url( $theme . '/assets/images/logo-gayrel-blanc-760.png' ); ?>" srcset="<?php echo esc_url( $theme . '/assets/images/logo-gayrel-blanc-400.png' ); ?> 400w, <?php echo esc_url( $theme . '/assets/images/logo-gayrel-blanc-760.png' ); ?> 760w" sizes="(min-width: 1920px) 667px, max(220px, 35vw)" alt="" width="760" height="207" loading="lazy" decoding="async"></span></a>
 <!-- /wp:html --></div>
 <!-- /wp:group -->
 

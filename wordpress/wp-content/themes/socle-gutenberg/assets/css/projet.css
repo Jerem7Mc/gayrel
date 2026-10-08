@@ -7,7 +7,9 @@
    ========================================================= */
 
 :root {
-	--g-marge: clamp(12px, 1.25vw, 24px);          /* retrait des cartes par rapport au bord de l'écran */
+	--g-marge: clamp(12px, 1.25vw, 24px);
+	--g-82: clamp(40px, 4.3vw, 82px);      /* rythme vertical de la maquette : 82 px … */
+	--g-106: clamp(48px, 5.5vw, 106px);    /* … et 106 px entre les grands blocs */          /* retrait des cartes par rapport au bord de l'écran */
 	--g-rayon: 4px;
 	--g-interieur: clamp(20px, 5vw, 97px);          /* marge intérieure des sections (97 px sur la maquette) */
 	--g-fleche: url("../icones/fleche.svg");
@@ -29,12 +31,18 @@ body { overflow-x: clip; }
 	white-space: nowrap;
 }
 
-/* ---------- Boutons « contour » de la maquette (CTA) : texte + flèche ---------- */
+/* ---------- Boutons « contour » de la maquette (composant CTA, variantes Fond blanc / Fond sombre / Fond bleu) ----------
+   Survol : deux bandes montent depuis le bas (la seconde reste), le texte passe en blanc, la petite flèche (8 px)
+   devient grande (20 px). Appui : seconde bande bleu roi. Couleurs par variante dans les variables --g-b1 / --g-b2. */
 .g-cta .wp-block-button__link,
 .wp-block-button.is-style-outline.g-cta > .wp-block-button__link {
+	--g-b1: var(--wp--preset--color--accent);
+	--g-b2: var(--wp--preset--color--nuit);
+	--g-texte: var(--wp--preset--color--encre);
+	--g-fleche-c: var(--wp--preset--color--accent);
 	background: transparent;
-	color: var(--wp--preset--color--encre);
-	border: 1px solid currentColor;
+	color: var(--g-texte);
+	border: 1px solid var(--g-texte);
 	border-radius: var(--g-rayon);
 	padding: 12px;
 	gap: 10px;
@@ -45,44 +53,40 @@ body { overflow-x: clip; }
 	position: relative;
 	overflow: hidden;
 	isolation: isolate;
-	transition: color .25s ease, border-color .25s ease, background-color 0s linear .3s;
+	transition: color .3s ease .1s, border-color .3s ease, background-color 0s linear .5s;
 }
 .g-cta .wp-block-button__link::after {
 	content: "";
 	width: 24px; height: 24px; flex: none;
-	background: var(--wp--preset--color--accent);
-	-webkit-mask: var(--g-fleche) center / contain no-repeat;
-	mask: var(--g-fleche) center / contain no-repeat;
-	transition: background-color .25s ease, transform .4s cubic-bezier(.2, .7, .2, 1);
+	background: var(--g-fleche-c);
+	-webkit-mask: url("../icones/fleche-grande.svg") center / 8px 8px no-repeat;
+	mask: url("../icones/fleche-grande.svg") center / 8px 8px no-repeat;
+	transition: -webkit-mask-size .45s cubic-bezier(.2, .7, .2, 1), mask-size .45s cubic-bezier(.2, .7, .2, 1), background-color .3s ease;
 }
-/* Survol : la flèche grossit */
-.g-cta .wp-block-button__link:is(:hover, :focus-visible)::after { transform: scale(1.45); }
-/* Survol : le fond bleu monte depuis le bas (état « Hover » du composant CTA) */
 .g-cta .wp-block-button__link::before {
 	content: "";
-	position: absolute; inset: 0;
-	background: var(--wp--preset--color--accent);
-	transform: translateY(101%);
-	transition: transform .3s ease;
+	position: absolute; left: -1px; right: -1px; top: 100%; height: 200%;
+	background: linear-gradient(var(--g-b1) 50%, var(--g-b2) 50%);
+	transition: transform .5s cubic-bezier(.6, 0, .2, 1);
 	z-index: -1;
 }
-.g-cta .wp-block-button__link:hover,
-.g-cta .wp-block-button__link:focus-visible { color: var(--wp--preset--color--sur-accent); border-color: var(--wp--preset--color--accent); background-color: var(--wp--preset--color--accent); }
-.g-cta .wp-block-button__link:hover::before,
-.g-cta .wp-block-button__link:focus-visible::before { transform: none; }
-.g-cta .wp-block-button__link:hover::after,
-.g-cta .wp-block-button__link:focus-visible::after { background: currentColor; }
-.g-cta .wp-block-button__link:active::before { background: var(--wp--preset--color--nuit); }
-/* Variante sur fond sombre */
-.g-cta--clair .wp-block-button__link { color: var(--wp--preset--color--fond); }
-.g-cta--clair .wp-block-button__link::after { background: currentColor; }
-.g-cta--clair .wp-block-button__link:hover,
-.g-cta--clair .wp-block-button__link:focus-visible { border-color: var(--wp--preset--color--fond); }
-.has-accent-background-color .g-cta--clair .wp-block-button__link:is(:hover, :focus-visible),
-.g-service--part .g-cta--clair .wp-block-button__link:is(:hover, :focus-visible) { background-color: var(--wp--preset--color--nuit); }
-.g-cta--clair .wp-block-button__link:hover::before { background: var(--wp--preset--color--accent); }
-.has-accent-background-color .g-cta--clair .wp-block-button__link:hover::before,
-.g-service--part .g-cta--clair .wp-block-button__link:hover::before { background: var(--wp--preset--color--nuit); }
+.g-cta .wp-block-button__link:is(:hover, :focus-visible) { color: var(--wp--preset--color--fond); border-color: var(--g-b2); background-color: var(--g-b2); }
+.g-cta .wp-block-button__link:is(:hover, :focus-visible)::before { transform: translateY(-100%); }
+.g-cta .wp-block-button__link:is(:hover, :focus-visible)::after { background: var(--wp--preset--color--fond); -webkit-mask-size: 20px 20px; mask-size: 20px 20px; }
+.g-cta .wp-block-button__link:active { --g-b2: var(--wp--preset--color--roi); }
+/* Fond sombre (cartes bleu nuit, bandeau d'appel) : contour blanc, survol gris puis bleu */
+.g-cta--clair .wp-block-button__link {
+	--g-texte: var(--wp--preset--color--fond);
+	--g-fleche-c: var(--wp--preset--color--fond);
+	--g-b1: var(--wp--preset--color--fond-2);
+	--g-b2: var(--wp--preset--color--accent);
+}
+.g-cta--clair .wp-block-button__link:focus-visible { outline-color: var(--wp--preset--color--fond); }
+/* Fond bleu (carte Particuliers) : flèche bleu nuit, survol gris puis bleu nuit */
+:is(.g-service--part, .has-accent-background-color) .g-cta--clair .wp-block-button__link {
+	--g-fleche-c: var(--wp--preset--color--nuit);
+	--g-b2: var(--wp--preset--color--nuit);
+}
 
 /* ---------- Icône cube (puce des titres de section) ---------- */
 .g-cube::before {
@@ -173,14 +177,16 @@ body { overflow-x: clip; }
 	mask: url("../icones/cube.svg") center / contain no-repeat;
 }
 .g-contact .wp-block-button__link::before {
-	content: ""; position: absolute; inset: 0; z-index: -1;
-	background: linear-gradient(var(--wp--preset--color--nuit) 50%, var(--wp--preset--color--roi) 50%);
-	transform: translateY(101%); transition: transform .35s ease;
+	--g-b2: var(--wp--preset--color--roi);
+	content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 200%; z-index: -1;
+	background: linear-gradient(var(--wp--preset--color--nuit) 50%, var(--g-b2) 50%);
+	transition: transform .5s cubic-bezier(.6, 0, .2, 1);
 }
-.g-contact .wp-block-button__link:hover,
-.g-contact .wp-block-button__link:focus-visible { background: var(--wp--preset--color--accent); color: var(--wp--preset--color--sur-accent); }
-.g-contact .wp-block-button__link:hover::before,
-.g-contact .wp-block-button__link:focus-visible::before { transform: translateY(0); background: var(--wp--preset--color--nuit); }
+.g-contact .wp-block-button__link { transition: background-color 0s linear .5s; }
+.g-contact .wp-block-button__link:is(:hover, :focus-visible) { background: var(--wp--preset--color--roi); color: var(--wp--preset--color--sur-accent); }
+.g-contact .wp-block-button__link:is(:hover, :focus-visible)::before { transform: translateY(-100%); }
+.g-contact .wp-block-button__link:active { background: var(--wp--preset--color--encre); }
+.g-contact .wp-block-button__link:active::before { --g-b2: var(--wp--preset--color--encre); }
 
 /* Menu mobile : le bloc Navigation passe en panneau sous 1366 px (cinq entrées + outils ne tiennent plus) */
 .g-entete .wp-block-navigation__responsive-container-open,
@@ -230,7 +236,7 @@ body { overflow-x: clip; }
    cadrage, sinon ils se décalent ; le cadrage laisse voir le ciel en haut (le mot GAYREL s'y glisse derrière le toit). */
 .g-hero__ciel img, .g-hero__batiment img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; display: block; }
 .g-hero__marque {
-	position: absolute; left: 50%; top: 7%;
+	position: absolute; left: 50%; top: 12%;
 	transform: translateX(-50%);
 	font-size: clamp(5rem, 18.2vw, 21.875rem);
 	font-weight: 600;
@@ -263,7 +269,7 @@ body { overflow-x: clip; }
 .g-acces a {
 	position: relative; overflow: hidden; isolation: isolate;
 	display: flex; align-items: flex-end; justify-content: space-between; gap: 16px;
-	min-height: 136px; padding: 16px 20px 20px 16px;
+	min-height: 136px; padding: 16px 20px 20px 16px; box-sizing: border-box;
 	border: 1px solid transparent;
 	border-radius: var(--g-rayon);
 	background-color: var(--wp--preset--color--accent);
@@ -294,17 +300,22 @@ body { overflow-x: clip; }
 .g-acces a:active { color: var(--wp--preset--color--accent); border-color: var(--wp--preset--color--accent); }
 .g-acces a:focus-visible { outline-color: var(--wp--preset--color--fond); }
 
-/* Animation d'entrée : lignes du titre qui montent, mot GAYREL qui apparaît, accès qui glissent */
+/* Animation d'entrée (variantes « Animation - Entrée » 1 → 4 de la maquette) : la photo plein cadre se rétracte dans
+   son cadre arrondi, le mot GAYREL apparaît derrière le bâtiment, puis l'en-tête, le titre et les accès. */
 @media (prefers-reduced-motion: no-preference) {
-	.g-hero h1 .g-ligne > span { animation: g-monte .9s cubic-bezier(.2, .7, .2, 1) both; }
-	.g-hero h1 .g-ligne:nth-child(2) > span { animation-delay: .12s; }
-	.g-hero h1 .g-ligne:nth-child(3) > span { animation-delay: .24s; }
-	.g-hero__accroche { animation: g-apparait .8s .5s ease both; }
-	.g-hero__marque { animation: g-marque 1.4s .1s cubic-bezier(.2, .7, .2, 1) both; }
-	.g-hero__acces > * { animation: g-glisse .8s .6s cubic-bezier(.2, .7, .2, 1) both; }
-	.g-hero__acces > :nth-child(2) { animation-delay: .72s; }
-	.g-hero__ciel img { animation: g-zoom 2.4s cubic-bezier(.2, .7, .2, 1) both; }
+	.g-hero { animation: g-cadre 1s .35s cubic-bezier(.65, 0, .25, 1) both; }
+	.g-hero__ciel img { animation: g-zoom 2.6s cubic-bezier(.2, .7, .2, 1) both; }
+	.g-hero__marque { animation: g-marque 1.2s 1s cubic-bezier(.2, .7, .2, 1) both; }
+	.home .wp-site-blocks > header.wp-block-template-part { animation: g-apparait .7s 1.6s ease both; }
+	.g-hero h1 .g-ligne > span { animation: g-monte .9s 1.7s cubic-bezier(.2, .7, .2, 1) both; }
+	.g-hero h1 .g-ligne:nth-child(2) > span { animation-delay: 1.82s; }
+	.g-hero h1 .g-ligne:nth-child(3) > span { animation-delay: 1.94s; }
+	.g-hero__accroche { animation: g-apparait .8s 2.2s ease both; }
+	.g-hero__acces > * { animation: g-glisse .8s 2.1s cubic-bezier(.2, .7, .2, 1) both; }
+	.g-hero__acces > :nth-child(2) { animation-delay: 2.22s; }
 }
+/* marge du cadre = 1,25 % de chaque côté : un agrandissement de 1 / 0,975 rend la photo plein cadre */
+@keyframes g-cadre { from { transform: translateY(calc(var(--g-marge) * -.5)) scale(1.0256); border-radius: 0; } }
 @keyframes g-monte { from { transform: translateY(105%); } }
 @keyframes g-apparait { from { opacity: 0; } }
 @keyframes g-marque { from { opacity: 0; transform: translate(-50%, 18%); } }
@@ -329,7 +340,7 @@ body { overflow-x: clip; }
    ========================================================= */
 .g-chiffres {
 	display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px 0;
-	max-width: 1680px; margin: clamp(48px, 5.5vw, 106px) auto !important;
+	max-width: 1680px; margin: var(--g-82) auto !important;
 	padding: 0 var(--g-interieur) !important;
 }
 .g-chiffre { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; margin: 0 !important; }
@@ -350,8 +361,9 @@ body { overflow-x: clip; }
    ========================================================= */
 .g-services {
 	position: relative;
+	--g-decal: clamp(160px, 26vw, 504px);
 	display: grid !important; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; /* carte Particuliers décalée, pas raccourcie */
-	margin: clamp(48px, 5.5vw, 106px) var(--g-marge) !important;
+	margin: var(--g-marge) !important;
 	padding: 0 !important; max-width: none !important;
 }
 .g-services > * { margin: 0 !important; }
@@ -365,8 +377,17 @@ body { overflow-x: clip; }
 	padding: 64px var(--g-p) 0 !important;
 	display: flex; flex-direction: column;
 }
-.g-service--pro { background: var(--wp--preset--color--nuit); }
-.g-service--part { background: var(--wp--preset--color--accent); margin-top: clamp(160px, 26vw, 504px) !important; }
+.g-service--pro { background-color: var(--wp--preset--color--nuit); }
+.g-service--part { background-color: var(--wp--preset--color--accent); margin-top: var(--g-decal) !important; }
+.g-services::before, .g-services::after {
+	content: ""; position: absolute; left: calc(-1 * var(--g-marge)); right: calc(-1 * var(--g-marge)); height: 0;
+	border-top: var(--g-trait); z-index: -1; pointer-events: none;
+}
+.g-services::before { top: calc(var(--g-decal) - 22px); }
+.g-services::after { bottom: calc(var(--g-decal) - 24px); }
+/* fines diagonales du fond des cartes (vecteurs de la maquette) */
+.g-service { background-image: repeating-linear-gradient(108deg, transparent 0 calc(33.3% - 1px), rgba(243, 244, 246, .14) calc(33.3% - 1px) 33.3%); }
+.g-service--pro { background-image: repeating-linear-gradient(108deg, transparent 0 calc(33.3% - 1px), rgba(243, 244, 246, .06) calc(33.3% - 1px) 33.3%); }
 .g-service > * { position: relative; max-width: 609px; margin: 0 !important; }
 .g-service h3 { font-size: 2rem; line-height: .95; font-weight: 500; color: inherit; margin: 0 0 24px !important; max-width: 430px; }
 .g-service p, .g-service > p { margin: 0 0 24px !important; }
@@ -376,7 +397,7 @@ body { overflow-x: clip; }
 }
 .g-service .g-geant {
 	position: relative; z-index: 1; max-width: none;
-	margin: auto calc(-1 * var(--g-p)) -0.62em calc(-1 * var(--g-p) - 0.03em) !important;
+	margin: auto calc(-1 * var(--g-p)) -0.95em calc(-1 * var(--g-p) - 0.03em) !important; /* la photo recouvre la moitié de la 2e ligne */
 	color: var(--wp--preset--color--ciel);
 	font-size: clamp(4.5rem, 10.4vw, 12.5rem);
 	white-space: nowrap;
@@ -410,7 +431,7 @@ body { overflow-x: clip; }
    ========================================================= */
 .g-projets {
 	position: relative;
-	margin: clamp(48px, 5.5vw, 106px) var(--g-marge) !important;
+	margin: var(--g-82) var(--g-marge) var(--g-106) !important;
 	padding: 0 0 clamp(64px, 8vw, 160px) !important;
 	background: var(--wp--preset--color--fond-2);
 	border-radius: var(--g-rayon);
@@ -426,10 +447,22 @@ body { overflow-x: clip; }
 	white-space: normal;
 	z-index: 0;
 }
-.g-projets__liste { grid-column: 2; grid-row: 1; padding-top: clamp(360px, 44vw, 848px) !important; position: relative; z-index: 1; }
+.g-projets__liste { grid-column: 2; grid-row: 1; padding-top: clamp(360px, 44vw, 848px) !important; position: relative; } /* sans z-index : le bouton passe au-dessus du dégradé */
 .g-projets h2 { font-size: 2rem; color: var(--wp--preset--color--nuit); margin: 0 0 16px; }
-.g-projets .wp-block-post-template { display: grid; gap: clamp(48px, 6vw, 120px); }
-.g-projets .wp-block-post { position: sticky; top: clamp(24px, 10vh, 120px); background: var(--wp--preset--color--fond-2); padding-top: 8px; }
+.g-projets .wp-block-post-template { display: grid; gap: clamp(64px, 11vw, 220px); }
+.g-projets .wp-block-post { --g-i: 0; position: sticky; top: calc(clamp(24px, 20vh, 226px) + var(--g-i) * 64px); background: var(--wp--preset--color--fond-2); }
+.g-projets .wp-block-post:nth-child(2) { --g-i: 1; }
+.g-projets .wp-block-post:nth-child(3) { --g-i: 2; }
+.g-projets .wp-block-post:nth-child(4) { --g-i: 3; }
+/* clavier : la carte qui a le focus passe devant celle qui l'empile (RGAA 10.7) */
+.g-projets .wp-block-post:focus-within { z-index: 4; }
+.g-projets::after {
+	content: ""; grid-column: 1 / -1; grid-row: 1; align-self: end;
+	position: sticky; bottom: 0; height: min(220px, 18vh); z-index: 2; pointer-events: none;
+	background: linear-gradient(to top, var(--wp--preset--color--fond-2) 15%, rgba(211, 213, 228, 0));
+	border-radius: 0 0 var(--g-rayon) var(--g-rayon);
+}
+.g-projets .wp-block-buttons { position: relative; z-index: 3; }
 .g-carte-projet { display: flex; flex-direction: column; gap: 16px; position: relative; }
 .g-carte-projet .wp-block-post-featured-image { margin: 0; aspect-ratio: 1224 / 632; overflow: hidden; border-radius: var(--g-rayon); }
 .g-carte-projet .wp-block-post-featured-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
@@ -468,6 +501,7 @@ body { overflow-x: clip; }
 	.g-projets__geant { position: static; font-size: clamp(3.25rem, 14vw, 6rem); padding: 0; }
 	.g-projets__liste { grid-column: 1; grid-row: 2; padding-top: 32px !important; }
 	.g-projets .wp-block-post { position: static; }
+	.g-projets::after { display: none; }
 }
 
 /* =========================================================
@@ -482,12 +516,13 @@ body { overflow-x: clip; }
 .g-duo__texte { padding: 64px clamp(20px, 3vw, 24px) !important; position: relative; overflow-x: clip; overflow-y: visible; } /* les jambages des grands mots (G, Q) peuvent passer le trait */
 .g-duo__texte > *:not(.g-geant) { max-width: 609px; position: relative; z-index: 1; }
 .g-duo__texte h2 { font-size: 2rem; line-height: .9; margin: 0 0 24px; max-width: 475px !important; }
-.g-duo__texte p { margin: 0 0 24px; color: #000; }
-.g-duo__texte .g-geant { position: absolute; left: 0; bottom: 0; color: var(--wp--preset--color--fond-2); font-size: clamp(5rem, 13vw, 15.625rem); line-height: .73; /* hauteur des capitales de Manrope : le pied des lettres touche le trait */ }
+.g-duo__texte p { margin: 0 !important; color: #000; }
+.g-duo__texte .wp-block-buttons { margin-top: 24px !important; }
+.g-duo__texte .g-geant { position: absolute; left: 0; bottom: 0; color: var(--wp--preset--color--fond-2); font-size: clamp(5rem, 11.4vw, 13.75rem); line-height: .73; /* hauteur des capitales de Manrope : le pied des lettres touche le trait */ }
 .g-duo--entreprise { padding-top: 24px !important; padding-bottom: 0 !important; }
 .g-duo--entreprise .g-duo__visuel { margin-bottom: 24px !important; }
 .g-duo--entreprise .g-duo__texte { padding: 64px 0 clamp(220px, 20vw, 342px) clamp(0px, 3vw, 64px) !important; }
-.g-duo__visuel { position: relative; border-radius: var(--g-rayon); overflow: hidden; min-height: 560px; }
+.g-duo__visuel { position: relative; border-radius: var(--g-rayon); overflow: hidden; min-height: clamp(560px, 57.7vw, 1107px); }
 .g-duo__visuel .wp-block-image { position: absolute; inset: 0; margin: 0; }
 .g-duo__visuel .wp-block-image img { width: 100%; height: 100%; object-fit: cover; }
 .g-duo__visuel::before { content: ""; position: absolute; inset: 0; background: rgba(46, 48, 65, .4); z-index: 1; }
@@ -508,6 +543,7 @@ body { overflow-x: clip; }
 	.g-duo__visuel { min-height: 420px; }
 	.g-duo--partenaire .g-duo__logo { padding: 48px 0 16px; }
 	.g-duo__texte { padding: 40px 4px !important; }
+	.g-faq .g-duo__texte { padding-bottom: clamp(96px, 26vw, 140px) !important; }
 }
 
 /* ---------- FAQ (blocs Détails natifs : ouverture au clavier, sans script) ---------- */
@@ -515,23 +551,23 @@ body { overflow-x: clip; }
 .g-faq__liste { background: var(--wp--preset--color--fond); padding: clamp(24px, 3.8vw, 64px) !important; display: flex; flex-direction: column; gap: 8px; }
 .g-faq__liste .wp-block-details {
 	border-bottom: 1px solid var(--wp--preset--color--encre);
-	padding: 0 0 8px; margin: 0;
+	padding: 0 0 8px; margin: 0 !important;
 }
 .g-faq__liste summary {
 	display: flex; align-items: center; justify-content: space-between; gap: 16px;
-	min-height: 59px; padding: 16px 0;
-	font-size: 1.25rem; font-weight: 600; line-height: 1.25;
+	box-sizing: border-box; min-height: 59px; padding: 16px 0;
+	font-size: 1.25rem; font-weight: 600; line-height: 1.35;
 	cursor: pointer; list-style: none;
 }
 .g-faq__liste summary::-webkit-details-marker { display: none; }
 .g-faq__liste summary::after {
 	content: ""; width: 18px; height: 18px; flex: none;
-	background: var(--wp--preset--color--roi);
+	background: var(--wp--preset--color--accent);
 	-webkit-mask: url("../icones/chevron.svg") center / 13px auto no-repeat; mask: url("../icones/chevron.svg") center / 13px auto no-repeat;
 	transform: rotate(-135deg); transition: transform .25s ease;
 }
 .g-faq__liste details[open]:not(.g-ferme) summary::after { transform: rotate(45deg); }
-.g-faq__liste .wp-block-details p { font-size: 1.125rem; margin: 0 0 16px; max-width: 600px; }
+.g-faq__liste .wp-block-details p { font-size: 1.25rem; font-weight: 400; margin: 0 0 8px !important; max-width: 600px; }
 
 /* =========================================================
    Bandeau d'appel (pages intérieures) et pied de page
@@ -557,7 +593,7 @@ body { overflow-x: clip; }
 .wp-site-blocks > footer.wp-block-template-part { margin-top: 0; }
 .g-pied {
 	position: relative; overflow: hidden;
-	margin: var(--g-marge) !important;
+	margin: var(--g-106) var(--g-marge) var(--g-marge) !important;
 	min-height: 600px;
 	border-radius: var(--g-rayon);
 	background: var(--wp--preset--color--accent);
@@ -567,21 +603,47 @@ body { overflow-x: clip; }
 }
 .g-pied > * { margin: 0 !important; }
 .g-pied__marque { display: flex; align-items: center; justify-content: center; padding: 48px 24px !important; }
-.g-pied__logo { display: block; }
-.g-pied__marque img { width: clamp(240px, 38vw, 729px); height: auto; aspect-ratio: 1333 / 364; }
-.g-pied__nav { border-left: 1px solid var(--wp--preset--color--fond); display: flex; align-items: center; padding: 48px clamp(24px, 6vw, 157px) !important; }
+.g-pied__logo { display: block; position: relative; width: clamp(240px, 38vw, 729px); aspect-ratio: 729 / 248.74; }
+.g-pied__cube, .g-pied__mot { position: absolute; inset: 0; }
+.g-pied__cube .g-face { position: absolute; display: block; max-width: none; }
+.g-face--2 { transform: scaleX(-1); }
+.g-pied__mot { overflow: hidden; }
+.g-pied__mot img { position: absolute; top: 0; left: -41.06%; width: 141.06%; height: 100%; max-width: none; }
+/* Assemblage du cube à l'arrivée du pied de page (navigateurs compatibles ; sinon logo assemblé) */
+@media (prefers-reduced-motion: no-preference) {
+	@supports (animation-timeline: view()) {
+		.g-pied__logo { view-timeline: --g-pied block; }
+		.g-pied__cube .g-face, .g-pied__mot { animation: g-face linear both; animation-timeline: --g-pied; animation-range: entry 0% cover 45%; }
+		.g-face--1 { --g-dx: 60%; --g-dy: -70%; }
+		.g-face--2 { --g-dx: -60%; --g-dy: -70%; }
+		.g-face--3 { --g-dx: 0; --g-dy: 80%; }
+		.g-face--4 { --g-dx: -120%; --g-dy: 40%; }
+		.g-face--5 { --g-dx: 70%; --g-dy: 50%; }
+		.g-face--6 { --g-dx: -70%; --g-dy: 50%; }
+		.g-face--7 { --g-dx: 0; --g-dy: -110%; }
+		.g-pied__mot { --g-dx: 12%; --g-dy: 0; }
+	}
+}
+@keyframes g-face { from { opacity: 0; translate: var(--g-dx) var(--g-dy); } }
+
+.g-pied__nav { display: flex; align-items: center; padding: 48px clamp(24px, 6vw, 157px) !important; }
+/* trait vertical de la maquette (Vector 42) : toute la hauteur, barre du bas comprise */
+.g-pied::after { content: ""; position: absolute; top: 0; bottom: 0; right: clamp(260px, 27%, 516px); border-left: 1px solid var(--wp--preset--color--fond); pointer-events: none; }
 .g-pied__nav .wp-block-navigation { font-size: 1.5rem; font-weight: 600; }
 .g-pied__nav .wp-block-navigation__container { flex-direction: column; align-items: flex-start; gap: 8px; }
 .g-pied .wp-block-navigation-item__content {
 	white-space: nowrap;
-	display: inline-flex; align-items: center; min-height: 50px; padding: 12px;
+	display: inline-flex; align-items: center; box-sizing: border-box; min-height: 50px; padding: 12px;
 	border-radius: var(--g-rayon); color: var(--wp--preset--color--fond); text-decoration: none; line-height: 1.1;
+	transition: background-color .25s ease, color .25s ease;
 }
-.g-pied .wp-block-navigation-item__content:hover { background: var(--wp--preset--color--nuit); color: var(--wp--preset--color--fond); }
+.g-pied .wp-block-navigation-item__content:is(:hover, :focus-visible) { background: var(--wp--preset--color--fond); color: var(--wp--preset--color--encre); }
+.g-pied .wp-block-navigation-item__content:active { background: var(--wp--preset--color--fond); color: var(--wp--preset--color--roi); }
 .g-pied .wp-block-navigation [aria-current="page"] { color: var(--wp--preset--color--fond); text-decoration: underline; }
+.g-pied .wp-block-navigation .wp-block-navigation-item__content[aria-current="page"]:is(:hover, :focus-visible) { color: var(--wp--preset--color--encre); }
 .g-pied :focus-visible { outline-color: var(--wp--preset--color--fond); }
 .g-pied__bas {
-	grid-column: 1 / -1;
+	grid-column: 1 / -1; position: relative; z-index: 1;
 	border-top: 1px solid var(--wp--preset--color--fond);
 	display: flex !important; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px;
 	padding: 12px 40px 16px !important;
@@ -597,6 +659,7 @@ body { overflow-x: clip; }
 .g-pied__signature a { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; color: inherit; text-decoration: none; }
 .g-pied__signature img { height: 16px; width: auto; }
 @media (max-width: 900px) {
+	.g-pied::after { display: none; }
 	.g-pied { grid-template-columns: 1fr; min-height: 0; }
 	.g-pied__nav { border-left: 0; border-top: 1px solid var(--wp--preset--color--fond); padding: 24px 12px !important; }
 	.g-pied__bas { padding: 12px 16px 16px !important; }
@@ -736,3 +799,19 @@ body { overflow-x: clip; }
 /* Éléments techniques du modèle, sans rendu dans l'éditeur (le fil d'Ariane est calculé sur le site) */
 .editor-styles-wrapper .g-page-entete > .wp-block-shortcode,
 .editor-styles-wrapper .wp-block-post-excerpt__more-text { display: none !important; }
+
+/* Formulaire du socle (contact, devis) aux couleurs de la maquette : champs arrondis 4 px, bouton bleu comme « Nous contacter » */
+.socle-form {
+	--socle-form-texte: var(--wp--preset--color--encre);
+	--socle-form-doux: var(--wp--preset--color--doux);
+	--socle-form-trait: var(--wp--preset--color--doux); /* contour des champs ≥ 3:1 (RGAA 3.3) */
+	--socle-form-trait-focus: var(--wp--preset--color--accent);
+	--socle-form-bouton-fond: var(--wp--preset--color--accent);
+	--socle-form-bouton-texte: var(--wp--preset--color--sur-accent);
+	--socle-form-rayon: var(--g-rayon);
+	font-size: 1.125rem;
+}
+.socle-form input:not([type="checkbox"]), .socle-form select, .socle-form textarea { background: #fff; }
+.socle-form__envoyer { min-height: 62px; padding: 8px 20px; border-radius: var(--g-rayon); font-size: 1.25rem; font-weight: 400; border: 1px solid var(--wp--preset--color--accent); transition: background-color .3s ease, color .3s ease, border-color .3s ease; }
+.socle-form__envoyer:hover { background: var(--wp--preset--color--roi); border-color: var(--wp--preset--color--roi); color: var(--wp--preset--color--sur-accent); }
+.socle-form__envoyer:active { background: var(--wp--preset--color--encre); border-color: var(--wp--preset--color--encre); }

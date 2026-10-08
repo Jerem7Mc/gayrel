@@ -293,8 +293,8 @@ $hero = g_groupe( 'g-hero alignfull',
 		g_titre( '<span class="g-ligne"><span>Façade, </span></span><span class="g-ligne"><span>Menuiserie, </span></span><span class="g-ligne"><span>aluminium.</span></span>', 1 )
 		. g_p( 'Concepteur, fabricant et installateur de menuiseries et façades en aluminium depuis 1994', 'g-hero__accroche' ) )
 	. g_groupe( 'g-hero__acces',
-		g_p( '<a href="/habitat/">Solutions pour l’Habitat<br>Particuliers</a>', 'g-acces g-acces--habitat' )
-		. g_p( '<a href="/batiment/">Solutions pour le Bâtiment<br>Professionnels</a>', 'g-acces g-acces--batiment' ) )
+		g_p( '<a href="/habitat/">Solutions pour l’Habitat Particuliers</a>', 'g-acces g-acces--habitat' )
+		. g_p( '<a href="/batiment/">Solutions pour le Bâtiment Professionnels</a>', 'g-acces g-acces--batiment' ) )
 );
 $chiffres = g_groupe( 'g-chiffres',
 	g_groupe( 'g-chiffre g-chiffre--experience', g_p( '+30 ans<br>d’expérience' ) )
