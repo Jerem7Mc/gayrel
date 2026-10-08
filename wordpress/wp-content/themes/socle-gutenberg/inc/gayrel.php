@@ -47,3 +47,26 @@ add_action( 'wp_enqueue_scripts', function () {
 
 // Éditeur : les pages s'ouvrent avec leur modèle (en-tête, pied, mise en page réelle), comme sur le site
 add_action( 'init', fn() => add_post_type_support( 'page', 'editor', [ 'default-mode' => 'template-locked' ] ), 20 );
+
+// Accueil : titre des réalisations empilées (assets/js/realisations.js)
+add_action( 'wp_enqueue_scripts', function () {
+	if ( is_front_page() ) {
+		$f = get_stylesheet_directory() . '/assets/js/realisations.js';
+		wp_enqueue_script( 'gayrel-realisations', get_stylesheet_directory_uri() . '/assets/js/realisations.js', [], filemtime( $f ), [ 'strategy' => 'defer', 'in_footer' => true ] );
+	}
+} );
+
+// En-tête des pages intérieures : grand mot décoratif de la maquette (méta _gayrel_mot de la page), masqué aux
+// lecteurs d'écran ; la page des articles utilise celui de la page « Actualités »
+add_filter( 'render_block_core/group', function ( $html, $bloc ) {
+	if ( ! str_contains( $bloc['attrs']['className'] ?? '', 'g-page-entete' ) || str_contains( $html, 'g-geant' ) ) {
+		return $html;
+	}
+	$id  = is_home() ? (int) get_option( 'page_for_posts' ) : ( is_page() ? get_queried_object_id() : 0 );
+	$mot = $id ? trim( (string) get_post_meta( $id, '_gayrel_mot', true ) ) : '';
+	if ( '' === $mot ) {
+		return $html;
+	}
+	$pos = strrpos( $html, '</div>' );
+	return substr( $html, 0, $pos ) . '<p class="g-geant" aria-hidden="true">' . esc_html( $mot ) . '</p>' . substr( $html, $pos );
+}, 10, 2 );

@@ -617,6 +617,10 @@ echo "✓ actualités\n";
 
 wp_get_theme()->delete_pattern_cache(); // compositions du thème (pied de page, appel) relues
 
+// Grand mot décoratif de l'en-tête des pages intérieures (inc/gayrel.php)
+foreach ( [ $id_habitat => 'Habitat', $id_batiment => 'Bâtiment', $id_showroom => 'Showroom', $id_actus => 'Actus', $id_contact => 'Contact', $id_devis => 'Devis' ] as $pid => $mot ) {
+	update_post_meta( $pid, '_gayrel_mot', $mot );
+}
 update_option( 'show_on_front', 'page' );
 update_option( 'page_on_front', $accueil );
 update_option( 'page_for_posts', $id_actus );
