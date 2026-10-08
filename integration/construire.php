@@ -33,7 +33,9 @@ function g_media( $fichier, $alt, $titre = '' ) {
 	$source = basename( dirname( $fichier ) ) . '/' . basename( $fichier );
 	$deja   = get_posts( [ 'post_type' => 'attachment', 'post_status' => 'inherit', 'numberposts' => 1, 'fields' => 'ids', 'meta_key' => '_gayrel_source', 'meta_value' => $source ] );
 	if ( $deja ) {
-		update_post_meta( $deja[0], '_wp_attachment_image_alt', $alt );
+		if ( '' !== $alt ) { // un média réutilisé sans texte (actualité, décor) garde son alternative
+			update_post_meta( $deja[0], '_wp_attachment_image_alt', $alt );
+		}
 		return $deja[0];
 	}
 	$tmp = wp_tempnam( basename( $fichier ) );
@@ -164,6 +166,9 @@ $m = [
 	'batiment'    => g_media( "$figma/accueil/img-1.png", '', 'gayrel-accueil-batiment-detoure' ),
 	'pro'         => g_media( "$figma/services/img-2.png", 'Bâtiment C80 Airbus à Colomiers, façade aux châssis en bandes filantes', 'solutions-batiment-professionnels' ),
 	'particulier' => g_media( "$figma/services/img-6.jpeg", 'Maison contemporaine à bardage sombre et grandes baies vitrées éclairées au crépuscule', 'solutions-habitat-particuliers' ),
+	// versions détourées (ciel transparent) des cartes de l'accueil : le grand mot passe derrière le bâtiment
+	'pro_detoure' => g_media( "$figma/services/img-3.png", '', 'batiment-c80-detoure' ),
+	'part_detoure' => g_media( "$figma/services/img-8.png", '', 'maison-contemporaine-detouree' ),
 	'immeuble'    => g_media( "$figma/entreprise/img-2.jpeg", '', 'gayrel-immeuble-facade-aluminium' ),
 	'technal'     => g_media( "$figma/entreprise/img-4.png", 'Technal, marque de menuiseries aluminium dont Gayrel est partenaire agréé', 'logo-technal' ),
 	'logo'        => g_media( "$figma/entete/img-1.png", 'Gayrel, façade, menuiserie, aluminium', 'logo-gayrel' ),
@@ -292,10 +297,10 @@ $hero = g_groupe( 'g-hero alignfull',
 		. g_p( '<a href="/batiment/">Solutions pour le Bâtiment<br>Professionnels</a>', 'g-acces g-acces--batiment' ) )
 );
 $chiffres = g_groupe( 'g-chiffres',
-	g_groupe( 'g-chiffre', g_icone( "$theme/assets/icones/experience.svg" ) . g_p( '+30 ans<br>d’expérience' ) )
-	. g_groupe( 'g-chiffre', g_icone( "$theme/assets/icones/recompenses.svg" ) . g_p( 'Plusieurs<br>récompenses' ) )
-	. g_groupe( 'g-chiffre', g_icone( "$theme/assets/icones/sur-mesure.svg" ) . g_p( '100 %<br>sur-mesure' ) )
-	. g_groupe( 'g-chiffre', g_icone( "$theme/assets/icones/garantie.svg" ) . g_p( 'Produits<br>garantis' ) )
+	g_groupe( 'g-chiffre g-chiffre--experience', g_p( '+30 ans<br>d’expérience' ) )
+	. g_groupe( 'g-chiffre g-chiffre--recompenses', g_p( 'Plusieurs<br>récompenses' ) )
+	. g_groupe( 'g-chiffre g-chiffre--sur-mesure', g_p( '100 %<br>sur-mesure' ) )
+	. g_groupe( 'g-chiffre g-chiffre--garantie', g_p( 'Produits<br>garantis' ) )
 );
 $services = g_groupe( 'g-services',
 	g_geant( 'Nos<br>services', 'g-services__titre' )
@@ -305,13 +310,13 @@ $services = g_groupe( 'g-services',
 		. g_p( 'Architectes, maîtres d’œuvre, entreprises générales et collectivités : nous concevons, fabriquons et posons les menuiseries et façades aluminium de vos bâtiments tertiaires, industriels et équipements publics. Murs rideaux, châssis en bandes filantes, portes, brise-soleil, garde-corps : notre équipe maîtrise toute la chaîne, de l’étude technique à la réception des travaux, en neuf comme en rénovation.' )
 		. g_boutons( [ $cta( 'Nos solutions pour le Bâtiment', '/batiment/', true ) ] )
 		. g_geant( 'Profes-<br>sionnels' )
-		. g_image( $m['pro'], '', 'large' ) )
+		. g_image( $m['pro_detoure'], '', 'large', '' ) )
 	. g_groupe( 'g-service g-service--part',
 		g_titre( 'Nos solutions pour l’Habitat et les Particuliers', 3 )
 		. g_p( 'Fenêtres, baies coulissantes, portes d’entrée, volets, garde-corps : nous fabriquons dans notre atelier de Gaillac des menuiseries aluminium sur mesure pour votre maison, avec les gammes Technal. Isolation thermique, sécurité, finitions et couleurs : nous vous conseillons et posons vos menuiseries, en construction comme en rénovation.' )
 		. g_boutons( [ $cta( 'Nos solutions pour l’Habitat', '/habitat/', true ) ] )
 		. g_geant( 'Parti-<br>culiers' )
-		. g_image( $m['particulier'], '', 'large' ) )
+		. g_image( $m['part_detoure'], '', 'large', '' ) )
 );
 $projets = g_groupe( 'g-projets',
 	g_geant( 'Découvrir<br>des projets<br>concrets', 'g-projets__geant' )
@@ -326,7 +331,7 @@ $projets = g_groupe( 'g-projets',
 $entreprise = g_groupe( 'g-duo g-duo--entreprise',
 	g_groupe( 'g-duo__texte g-cube',
 		g_titre( 'Expert en menuiserie et façade aluminium' )
-		. g_p( 'GAYREL SAS, située à Gaillac entre Albi et Toulouse, se distingue par son expertise technique en menuiserie aluminium orientée vers la clientèle professionnelle sur les marchés publics.' )
+		. g_p( 'Gayrel SAS, située à Gaillac entre Albi et Toulouse, se distingue par son expertise technique en menuiserie aluminium orientée vers la clientèle professionnelle sur les marchés publics.' )
 		. g_p( 'Forte d’un savoir-faire reconnu, notre entreprise accompagne les professionnels sur des projets architecturaux complexes, en neuf comme en rénovation.' )
 		. g_p( 'Notre équipe maîtrise l’ensemble de la chaîne, de l’étude technique à la mise en œuvre sur site, pour garantir performance, fiabilité et conformité aux exigences du marché.' )
 		. g_boutons( [ $cta( 'En savoir plus sur l’entreprise', '/entreprise/' ) ] )
@@ -337,7 +342,7 @@ $partenaire = g_groupe( 'g-duo g-duo--partenaire',
 	g_groupe( 'g-duo__logo', g_image( $m['technal'], '', 'full' ) )
 	. g_groupe( 'g-duo__texte',
 		g_titre( 'Fiabilité d’une marque reconnue' )
-		. g_p( 'TECHNAL® est une marque de référence, reconnue pour la qualité de ses produits et son engagement envers l’innovation et la durabilité. En tant que partenaire agréé, nous bénéficions d’une très grande expérience en termes de conseils, de fabrication et de pose de menuiseries aluminium : portes, fenêtres, murs rideaux, garde-corps… Nous avons accès à une large gamme de solutions sur mesure adaptées à tous types de projets. Cela inclut des produits à la pointe de la technologie en termes d’isolation thermique, de résistance, de sécurité et de conception.' )
+		. g_p( 'Technal® est une marque de référence, reconnue pour la qualité de ses produits et son engagement envers l’innovation et la durabilité. En tant que partenaire agréé, nous bénéficions d’une très grande expérience en termes de conseils, de fabrication et de pose de menuiseries aluminium : portes, fenêtres, murs rideaux, garde-corps… Nous avons accès à une large gamme de solutions sur mesure adaptées à tous types de projets. Cela inclut des produits à la pointe de la technologie en termes d’isolation thermique, de résistance, de sécurité et de conception.' )
 		. g_boutons( [ $cta( 'Contacter nos équipes', '/contact/' ) ] ) )
 );
 $faq_questions = [
@@ -348,7 +353,7 @@ $faq_questions = [
 	[ 'Quels produits proposez-vous ?', 'Murs rideaux, fenêtres et portes-fenêtres, baies coulissantes, portes, stores et brise-soleil, volets roulants, garde-corps, produits coupe-feu et produits spécifiques, dans une large gamme de couleurs et de finitions.' ],
 	[ 'Les menuiseries aluminium sont-elles bien isolantes ?', 'Oui. Nos menuiseries intègrent une rupture de pont thermique qui interrompt la transmission de chaleur entre l’intérieur et l’extérieur, avec le vitrage adapté à votre projet (isolation thermique et acoustique, sécurité).' ],
 	[ 'L’aluminium que vous utilisez est-il recyclé ?', 'Nos châssis sont fabriqués avec un aluminium recyclé à faible empreinte carbone, issu d’une filière française. L’aluminium se recycle ensuite à l’infini sans perdre ses qualités.' ],
-	[ 'Comment obtenir un devis ?', 'Décrivez votre projet sur la page Devis ou appelez-nous au 05 63 81 42 42. Joignez si possible vos plans ou le cahier des charges : notre bureau d’étude vous répond rapidement.' ],
+	[ 'Comment obtenir un devis ?', 'Décrivez votre projet sur la page Devis ou appelez-nous au <a href="tel:+33563814242">05 63 81 42 42</a>. Joignez si possible vos plans ou le cahier des charges : notre bureau d’étude vous répond rapidement.' ],
 ];
 $faq = g_groupe( 'g-duo g-faq',
 	g_groupe( 'g-duo__texte g-cube', g_titre( 'Vous avez une question,<br>vos réponses sont ici !' ) . g_geant( 'FAQ' ) )
@@ -405,7 +410,7 @@ $id_entreprise = g_page( 'entreprise', 'L’entreprise',
 		g_groupe( 'g-bloc',
 			g_groupe( 'g-bloc__texte g-cube',
 				g_titre( 'Une expertise technique dédiée aux professionnels du bâtiment' )
-				. g_p( 'GAYREL SAS, située à Gaillac entre Albi et Toulouse, se distingue par son expertise technique en menuiserie aluminium orientée vers la clientèle professionnelle sur les marchés publics.' )
+				. g_p( 'Gayrel SAS, située à Gaillac entre Albi et Toulouse, se distingue par son expertise technique en menuiserie aluminium orientée vers la clientèle professionnelle sur les marchés publics.' )
 				. g_p( 'Notre savoir-faire et notre solide expérience permettent de répondre aux chantiers techniques et architecturaux les plus complexes, en neuf comme en rénovation. Notre équipe pluridisciplinaire gère l’intégralité des projets de menuiseries sur mesure, de la conception à la réception des travaux.' )
 				. g_p( 'Notre partenariat avec Technal est un gage de sécurité et de fiabilité : il nous permet de proposer la solution la plus durable, esthétique et performante, adaptée aux contraintes de votre projet. Notre connaissance du bâtiment nous permet d’anticiper et de résoudre rapidement les difficultés techniques du chantier, pour livrer sans retard.' )
 				. g_boutons( [ $cta( 'Voir nos réalisations', '/realisations/' ) ] ) )
@@ -540,20 +545,20 @@ $id_devis = g_page( 'devis', 'Demande de devis',
 g_page( 'mentions-legales', 'Mentions légales',
 	g_groupe( 'g-texte',
 		g_titre( 'Éditeur du site' )
-		. g_p( 'GAYREL, société par actions simplifiée (SAS)<br>ZAC de Roumagnac, 13 avenue de l’Europe, 81600 Gaillac<br>SIRET : 393 889 530 00027 — RCS : <span class="a-completer">[à compléter]</span> greffe et capital social<br>TVA intracommunautaire : FR52393889530<br>Téléphone : 05 63 81 42 42 — E-mail : <a href="mailto:contact@gayrel.fr">contact@gayrel.fr</a>' )
+		. g_p( 'Gayrel, société par actions simplifiée (SAS)<br>ZAC de Roumagnac, 13 avenue de l’Europe, 81600 Gaillac<br>SIRET : 393 889 530 00027 — RCS : <span class="a-completer">[à compléter]</span> greffe et capital social<br>TVA intracommunautaire : FR52393889530<br>Téléphone : <a href="tel:+33563814242">05 63 81 42 42</a> — E-mail : <a href="mailto:contact@gayrel.fr">contact@gayrel.fr</a>' )
 		. g_p( 'Directeur ou directrice de la publication : <span class="a-completer">[à compléter]</span> nom du représentant légal.' )
 		. g_titre( 'Hébergement' )
-		. g_p( '<span class="a-completer">[à compléter]</span> hébergeur du nouveau site (le site actuel est hébergé par o2switch, chemin des Pardiaux, 63000 Clermont-Ferrand, 04 44 44 60 40).' )
+		. g_p( '<span class="a-completer">[à compléter]</span> hébergeur du nouveau site (le site actuel est hébergé par o2switch).' )
 		. g_titre( 'Conception et réalisation' )
 		. g_p( 'Agoravita — <a href="https://www.agoravita.com/">agoravita.com</a>' )
 		. g_titre( 'Propriété intellectuelle' )
 		. g_p( 'Les contenus de ce site (textes, photographies, logos) sont protégés. Toute reproduction sans autorisation écrite est interdite. Technal® est une marque déposée de son propriétaire. Crédits photographiques : <span class="a-completer">[à compléter]</span>.' ) ),
-	'', 'page-pleine-largeur'
+	'Éditeur, hébergement et propriété intellectuelle du site gayrel.fr.'
 );
 g_page( 'politique-de-confidentialite', 'Politique de confidentialité',
 	g_groupe( 'g-texte',
 		g_titre( 'Responsable du traitement' )
-		. g_p( 'GAYREL SAS, ZAC de Roumagnac, 13 avenue de l’Europe, 81600 Gaillac — <a href="mailto:contact@gayrel.fr">contact@gayrel.fr</a>' )
+		. g_p( 'Gayrel SAS, ZAC de Roumagnac, 13 avenue de l’Europe, 81600 Gaillac — <a href="mailto:contact@gayrel.fr">contact@gayrel.fr</a>' )
 		. g_titre( 'Formulaires de contact et de devis' )
 		. g_p( 'Les informations envoyées (nom, e-mail, téléphone, message) servent uniquement à répondre à votre demande. Elles sont conservées 1 an au maximum, puis supprimées automatiquement.' )
 		. g_titre( 'Cookies et services tiers' )
@@ -562,12 +567,15 @@ g_page( 'politique-de-confidentialite', 'Politique de confidentialité',
 		. '<!-- wp:shortcode -->' . "\n[socle_mesure_info]\n<!-- /wp:shortcode -->\n"
 		. g_titre( 'Vos droits' )
 		. g_p( 'Accès, rectification, effacement, opposition, limitation : écrivez-nous à <a href="mailto:contact@gayrel.fr">contact@gayrel.fr</a>. Réclamation possible auprès de la CNIL (cnil.fr/fr/plaintes).' ) ),
-	'', 'page-pleine-largeur'
+	'Quelles données nous recueillons, pourquoi, combien de temps, et comment exercer vos droits.'
 );
 foreach ( [ 'plan-du-site' ] as $s ) {
 	$p = get_page_by_path( $s );
 	if ( $p && ! str_contains( $p->post_content, 'g-texte' ) ) {
 		wp_update_post( [ 'ID' => $p->ID, 'post_content' => g_groupe( 'g-texte', $p->post_content ) ] );
+	}
+	if ( $p && ! has_excerpt( $p ) ) {
+		wp_update_post( [ 'ID' => $p->ID, 'post_excerpt' => 'Toutes les pages du site, pour trouver rapidement une information.' ] );
 	}
 }
 echo "✓ pages\n";
@@ -607,13 +615,16 @@ echo "✓ actualités\n";
 
 /* ------------------------------------------------------------------ 6. Lecture, menus, en-tête et pied */
 
+wp_get_theme()->delete_pattern_cache(); // compositions du thème (pied de page, appel) relues
+
 update_option( 'show_on_front', 'page' );
 update_option( 'page_on_front', $accueil );
 update_option( 'page_for_posts', $id_actus );
 
 $lien = fn( $titre, $id ) => sprintf( '<!-- wp:navigation-link {"label":"%s","type":"page","id":%d,"url":"%s","kind":"post-type"} /-->', esc_attr( $titre ), $id, esc_url( get_permalink( $id ) ) );
 $libre = fn( $titre, $url ) => sprintf( '<!-- wp:navigation-link {"label":"%s","url":"%s","kind":"custom"} /-->', esc_attr( $titre ), esc_attr( $url ) );
-$principal = [ $lien( 'L’entreprise', $id_entreprise ), $lien( 'Habitat', $id_habitat ), $lien( 'Bâtiment', $id_batiment ), $lien( 'Showroom', $id_showroom ), $lien( 'Actualités', $id_actus ) ];
+$mobile    = fn( $html ) => str_replace( '"kind":"post-type"}', '"kind":"post-type","className":"g-seulement-mobile"}', $html ); // entrées du seul panneau mobile
+$principal = [ $lien( 'L’entreprise', $id_entreprise ), $lien( 'Habitat', $id_habitat ), $lien( 'Bâtiment', $id_batiment ), $lien( 'Showroom', $id_showroom ), $lien( 'Actualités', $id_actus ), $mobile( $lien( 'Devis', $id_devis ) ), $mobile( $lien( 'Nous contacter', $id_contact ) ) ];
 $pied      = [ $lien( 'L’entreprise', $id_entreprise ), $lien( 'Habitat', $id_habitat ), $lien( 'Bâtiment', $id_batiment ), $libre( 'Réalisations', '/realisations/' ), $lien( 'Showroom', $id_showroom ), $lien( 'Actualités', $id_actus ), $lien( 'Nous contacter', $id_contact ) ];
 $legal     = [ $lien( 'Mentions légales', get_page_by_path( 'mentions-legales' )->ID ), $libre( 'Gestion des cookies', '#gestion-cookies' ), $lien( 'Politique de confidentialité', get_page_by_path( 'politique-de-confidentialite' )->ID ), $lien( 'Plan du site', get_page_by_path( 'plan-du-site' )->ID ) ];
 $menus = [ 'Menu principal' => $principal, 'Pied de page' => $pied, 'Informations légales' => $legal ];

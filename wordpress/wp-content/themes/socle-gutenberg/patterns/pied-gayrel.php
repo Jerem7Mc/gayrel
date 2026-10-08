@@ -15,9 +15,9 @@ $theme       = get_stylesheet_directory_uri();
 ?>
 <!-- wp:group {"className":"g-pied","layout":{"type":"default"}} -->
 <div class="wp-block-group g-pied"><!-- wp:group {"className":"g-pied__marque","layout":{"type":"default"}} -->
-<div class="wp-block-group g-pied__marque"><!-- wp:image {"width":"729px","sizeSlug":"full","linkDestination":"custom"} -->
-<figure class="wp-block-image size-full is-resized"><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><img src="<?php echo esc_url( $theme . '/assets/images/logo-gayrel-blanc.png' ); ?>" alt="Gayrel, façade, menuiserie, aluminium — retour à l’accueil" width="1333" height="364" style="width:729px"/></a></figure>
-<!-- /wp:image --></div>
+<div class="wp-block-group g-pied__marque"><!-- wp:html -->
+<a class="g-pied__logo" href="<?php echo esc_url( home_url( '/' ) ); ?>"><img src="<?php echo esc_url( $theme . '/assets/images/logo-gayrel-blanc-760.png' ); ?>" srcset="<?php echo esc_url( $theme . '/assets/images/logo-gayrel-blanc-760.png' ); ?> 760w, <?php echo esc_url( $theme . '/assets/images/logo-gayrel-blanc.png' ); ?> 1333w" sizes="(min-width: 1900px) 729px, 38vw" width="760" height="207" loading="lazy" decoding="async" alt="Gayrel, façade, menuiserie, aluminium — retour à l’accueil"></a>
+<!-- /wp:html --></div>
 <!-- /wp:group -->
 
 <!-- wp:group {"className":"g-pied__nav","layout":{"type":"default"}} -->

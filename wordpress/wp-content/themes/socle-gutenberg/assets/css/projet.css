@@ -45,7 +45,7 @@ body { overflow-x: clip; }
 	position: relative;
 	overflow: hidden;
 	isolation: isolate;
-	transition: color .25s ease, border-color .25s ease;
+	transition: color .25s ease, border-color .25s ease, background-color 0s linear .3s;
 }
 .g-cta .wp-block-button__link::after {
 	content: "";
@@ -53,8 +53,10 @@ body { overflow-x: clip; }
 	background: var(--wp--preset--color--accent);
 	-webkit-mask: var(--g-fleche) center / contain no-repeat;
 	mask: var(--g-fleche) center / contain no-repeat;
-	transition: background-color .25s ease;
+	transition: background-color .25s ease, transform .3s ease;
 }
+/* Survol : la flèche grossit */
+.g-cta .wp-block-button__link:is(:hover, :focus-visible)::after { transform: scale(1.45); }
 /* Survol : le fond bleu monte depuis le bas (état « Hover » du composant CTA) */
 .g-cta .wp-block-button__link::before {
 	content: "";
@@ -65,7 +67,7 @@ body { overflow-x: clip; }
 	z-index: -1;
 }
 .g-cta .wp-block-button__link:hover,
-.g-cta .wp-block-button__link:focus-visible { color: var(--wp--preset--color--sur-accent); border-color: var(--wp--preset--color--accent); }
+.g-cta .wp-block-button__link:focus-visible { color: var(--wp--preset--color--sur-accent); border-color: var(--wp--preset--color--accent); background-color: var(--wp--preset--color--accent); }
 .g-cta .wp-block-button__link:hover::before,
 .g-cta .wp-block-button__link:focus-visible::before { transform: none; }
 .g-cta .wp-block-button__link:hover::after,
@@ -76,8 +78,11 @@ body { overflow-x: clip; }
 .g-cta--clair .wp-block-button__link::after { background: currentColor; }
 .g-cta--clair .wp-block-button__link:hover,
 .g-cta--clair .wp-block-button__link:focus-visible { border-color: var(--wp--preset--color--fond); }
+.has-accent-background-color .g-cta--clair .wp-block-button__link:is(:hover, :focus-visible),
+.g-service--part .g-cta--clair .wp-block-button__link:is(:hover, :focus-visible) { background-color: var(--wp--preset--color--nuit); }
 .g-cta--clair .wp-block-button__link:hover::before { background: var(--wp--preset--color--accent); }
-.has-accent-background-color .g-cta--clair .wp-block-button__link:hover::before { background: var(--wp--preset--color--nuit); }
+.has-accent-background-color .g-cta--clair .wp-block-button__link:hover::before,
+.g-service--part .g-cta--clair .wp-block-button__link:hover::before { background: var(--wp--preset--color--nuit); }
 
 /* ---------- Icône cube (puce des titres de section) ---------- */
 .g-cube::before {
@@ -110,14 +115,15 @@ body { overflow-x: clip; }
 .g-pastille {
 	background: var(--wp--preset--color--fond);
 	border-radius: var(--g-rayon);
-	min-height: 62px;
+	height: 62px; box-sizing: border-box;
 	display: flex; align-items: center;
 	padding: 8px;
 	margin: 0 !important;
 }
 .g-entete .wp-block-site-logo { padding: 8px 12px; }
-.g-entete .wp-block-site-logo img { width: 136px; height: auto; display: block; }
-.g-entete .wp-block-site-logo a { display: block; min-height: 0; }
+.g-entete .wp-block-site-logo { flex: none; }
+.g-entete .wp-block-site-logo img { width: 136px; min-width: 136px; height: auto; display: block; }
+.g-entete .wp-block-site-logo a { display: block; min-height: 37px; }
 .g-entete .wp-block-navigation { font-size: 1.25rem; gap: 8px; }
 .g-entete .wp-block-navigation .wp-block-navigation__container { gap: 8px; }
 .g-entete .wp-block-navigation-item__content,
@@ -133,10 +139,10 @@ body { overflow-x: clip; }
 .g-entete .wp-block-navigation-item__content:hover,
 .g-entete__outils a:hover { background: var(--wp--preset--color--fond-2); color: var(--wp--preset--color--encre); }
 .g-entete .wp-block-navigation [aria-current="page"],
-.g-entete .current-menu-item > .wp-block-navigation-item__content { text-decoration: none; color: var(--wp--preset--color--accent); background: var(--wp--preset--color--fond-2); }
+.g-entete .current-menu-item > .wp-block-navigation-item__content { text-decoration: none; color: var(--wp--preset--color--nuit); background: var(--wp--preset--color--fond-2); }
 .g-entete__outils { gap: 8px; display: flex; align-items: center; flex-wrap: nowrap; }
 .g-entete nav.g-pastille { padding: 8px; }
-.g-entete .g-nav .wp-block-navigation__container { background: none; padding: 0; min-height: 0; border-radius: 0; }
+.g-entete .g-nav .wp-block-navigation__container { background: none; padding: 0; min-height: 0; border-radius: 0; height: auto; }
 .g-entete__outils p { margin: 0; font-size: 1.25rem; }
 .g-entete__tel a::before {
 	content: ""; width: 23px; height: 23px; flex: none;
@@ -153,7 +159,7 @@ body { overflow-x: clip; }
 /* Bouton « Nous contacter » : bleu, 62 px, icône cube */
 .g-contact { margin: 0; }
 .g-contact .wp-block-button__link {
-	min-height: 62px; padding: 8px 12px; gap: 12px;
+	min-height: 62px; height: 62px; box-sizing: border-box; padding: 8px 12px; gap: 12px;
 	background: var(--wp--preset--color--accent);
 	color: var(--wp--preset--color--sur-accent);
 	font-size: 1.25rem;
@@ -175,33 +181,33 @@ body { overflow-x: clip; }
 .g-contact .wp-block-button__link:hover::before,
 .g-contact .wp-block-button__link:focus-visible::before { transform: translateY(0); background: var(--wp--preset--color--nuit); }
 
-/* Menu mobile : le bloc Navigation passe en panneau sous 1280 px (cinq entrées + outils ne tiennent plus) */
+/* Menu mobile : le bloc Navigation passe en panneau sous 1366 px (cinq entrées + outils ne tiennent plus) */
 .g-entete .wp-block-navigation__responsive-container-open,
 .g-entete .wp-block-navigation__responsive-container-close { width: 46px; height: 46px; border: 0; border-radius: var(--g-rayon); }
 .g-entete .wp-block-navigation__responsive-container.is-menu-open { background: var(--wp--preset--color--fond); padding: 24px; }
 .g-entete .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content { font-size: 1.75rem; min-height: 56px; }
-@media (max-width: 1279px) {
+@media (max-width: 1599px) {
+	.g-entete .wp-block-social-links, .g-entete__devis { display: none; }
+}
+@media (max-width: 1365px) {
 	.g-entete .wp-block-navigation__responsive-container-open:not(.always-shown) { display: flex !important; }
 	.g-entete .wp-block-navigation__responsive-container:not(.hidden-by-default):not(.is-menu-open) { display: none !important; }
 	.g-entete .wp-block-navigation { padding: 0; }
-	.g-entete .wp-block-social-links, .g-entete__devis { display: none; }
 }
 @media (max-width: 899px) {
 	.g-entete { padding: 12px 12px 0; align-items: center; }
 	.g-entete__outils .g-entete__tel { display: none; }
 	.g-entete__outils:not(:has(> :not(.g-entete__tel):not(.wp-block-social-links):not(.g-entete__devis))) { display: none; }
-	.g-pastille { min-height: 54px; }
-	.g-contact .wp-block-button__link { min-height: 54px; font-size: 1.125rem; }
+	.g-pastille { height: 54px; }
+	.g-contact .wp-block-button__link { min-height: 54px; height: 54px; font-size: 1.125rem; }
 }
 @media (max-width: 479px) {
-	.g-contact .wp-block-button__link { font-size: 0; gap: 0; width: 54px; justify-content: center; }
-	.g-contact .wp-block-button__link::after { width: 26px; height: 26px; }
-	.g-entete .wp-block-site-logo img { width: 112px; }
+	.g-entete .g-contact { display: none; }
+	.g-entete .wp-block-site-logo img { width: 120px; min-width: 120px; }
+	.g-entete .wp-block-site-logo a { min-height: 33px; }
 }
-@media (max-width: 479px) {
-	/* le libellé reste lisible par les lecteurs d'écran (taille 0 = visuel seulement) */
-	.g-contact .wp-block-button__link { line-height: 0; }
-}
+/* Entrées du menu réservées au panneau mobile (Devis, Nous contacter) */
+.g-entete .wp-block-navigation__responsive-container:not(.is-menu-open) .g-seulement-mobile { display: none; }
 
 /* =========================================================
    Accueil — visuel d'entrée (« Animation - Entrée ») : ciel, mot GAYREL derrière le bâtiment détouré
@@ -278,7 +284,7 @@ body { overflow-x: clip; }
 	transition: transform .3s ease;
 }
 .g-acces a:hover, .g-acces a:focus-visible { color: var(--wp--preset--color--fond); }
-.g-acces a:hover::after, .g-acces a:focus-visible::after { transform: translate(4px, -4px); }
+.g-acces a:hover::after, .g-acces a:focus-visible::after { transform: scale(1.25); }
 .g-acces a:hover::before { transform: translateX(-40px); }
 .g-acces a:focus-visible { outline-color: var(--wp--preset--color--fond); }
 
@@ -321,8 +327,11 @@ body { overflow-x: clip; }
 	padding: 0 var(--g-interieur) !important;
 }
 .g-chiffre { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; margin: 0 !important; }
-.g-chiffre .wp-block-image { margin: 0; }
-.g-chiffre .wp-block-image img { height: 32px; width: auto; }
+.g-chiffre::before { content: ""; width: 37px; height: 32px; background: center / contain no-repeat; }
+.g-chiffre--experience::before { background-image: url("../icones/experience.svg"); }
+.g-chiffre--recompenses::before { background-image: url("../icones/recompenses.svg"); }
+.g-chiffre--sur-mesure::before { background-image: url("../icones/sur-mesure.svg"); }
+.g-chiffre--garantie::before { background-image: url("../icones/garantie.svg"); }
 .g-chiffre p { margin: 0; font-size: 1.5rem; font-weight: 500; line-height: 1; text-transform: uppercase; }
 @media (max-width: 900px) { .g-chiffres { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 420px) { .g-chiffre p { font-size: 1.25rem; } }
@@ -362,9 +371,10 @@ body { overflow-x: clip; }
 }
 .g-service .wp-block-image {
 	position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; max-width: none;
-	height: 43%; margin: 0;
+	height: 52%; margin: 0;
 }
-.g-service .wp-block-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* photos détourées (ciel transparent) : le grand mot reste visible derrière le bâtiment */
+.g-service .wp-block-image img { width: 100%; height: 100%; object-fit: cover; object-position: center bottom; display: block; }
 @media (prefers-reduced-motion: no-preference) {
 	@supports (animation-timeline: view()) {
 		.g-service .g-geant { animation: g-glisse-geant linear both; animation-timeline: view(); animation-range: entry 0% cover 60%; }
@@ -423,7 +433,8 @@ body { overflow-x: clip; }
 /* Toute la carte est cliquable par le lien du titre (une seule cible pour le clavier) */
 .g-carte-projet .wp-block-post-title a::before { content: ""; position: absolute; inset: 0; z-index: 1; }
 .g-carte-projet:hover .wp-block-post-featured-image img { transform: scale(1.04); }
-.g-carte-projet:hover .wp-block-post-title a::after { transform: translate(3px, -3px); }
+.g-carte-projet:hover .wp-block-post-title a::after,
+.g-carte-projet .wp-block-post-title a:focus-visible::after { transform: scale(1.6); }
 /* Pastille « Voir le projet » au survol (composant Card Réalisation) */
 .g-carte-projet .wp-block-post-featured-image { position: relative; }
 .g-carte-projet .wp-block-post-featured-image::after {
@@ -542,8 +553,8 @@ body { overflow-x: clip; }
 }
 .g-pied > * { margin: 0 !important; }
 .g-pied__marque { display: flex; align-items: center; justify-content: center; padding: 48px 24px !important; }
-.g-pied__marque .wp-block-image { margin: 0; }
-.g-pied__marque img { width: clamp(240px, 38vw, 729px); height: auto; }
+.g-pied__logo { display: block; }
+.g-pied__marque img { width: clamp(240px, 38vw, 729px); height: auto; aspect-ratio: 1333 / 364; }
 .g-pied__nav { border-left: 1px solid var(--wp--preset--color--fond); display: flex; align-items: center; padding: 48px clamp(24px, 6vw, 157px) !important; }
 .g-pied__nav .wp-block-navigation { font-size: 1.5rem; font-weight: 600; }
 .g-pied__nav .wp-block-navigation__container { flex-direction: column; align-items: flex-start; gap: 8px; }
