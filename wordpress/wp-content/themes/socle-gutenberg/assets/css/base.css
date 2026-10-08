@@ -1,0 +1,39 @@
+/* =========================================================
+   Socle Gutenberg — styles de base (site et éditeur)
+   Ce que theme.json ne sait pas exprimer : en-tête collant, tailles de cibles, focus, liens d'évitement.
+   ========================================================= */
+
+/* ---------- En-tête collant ---------- */
+.wp-site-blocks > header.wp-block-template-part { position: sticky; top: 0; z-index: 30; background: var(--wp--preset--color--fond); border-bottom: 1px solid var(--wp--preset--color--trait); }
+.admin-bar .wp-site-blocks > header.wp-block-template-part { top: 32px; }
+@media (max-width: 782px) { .admin-bar .wp-site-blocks > header.wp-block-template-part { top: 46px; } }
+@media (max-width: 600px) { .admin-bar .wp-site-blocks > header.wp-block-template-part { top: 0; } }
+.socle-entete .wp-block-site-title a { display: inline-flex; align-items: center; min-height: 48px; }
+
+/* ---------- Navigation : cibles ≥ 44 px, page courante visible ---------- */
+.wp-block-navigation .wp-block-navigation-item__content { display: inline-flex; align-items: center; min-height: 44px; }
+.wp-block-navigation .current-menu-item > .wp-block-navigation-item__content,
+.wp-block-navigation [aria-current="page"] { text-decoration: underline; text-underline-offset: 6px; color: var(--wp--preset--color--accent); }
+.wp-block-navigation__responsive-container-open,
+.wp-block-navigation__responsive-container-close { width: 48px; height: 48px; display: inline-grid; place-items: center; border: 1px solid var(--wp--preset--color--trait); border-radius: 50%; }
+.wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content { font-size: 1.75rem; min-height: 64px; }
+.socle-pied .wp-block-navigation-item__content { min-height: 40px; font-weight: 400; }
+.socle-pied .wp-block-navigation [aria-current="page"] { color: inherit; }
+
+/* ---------- Accessibilité ---------- */
+:focus-visible { outline: 3px solid var(--wp--preset--color--accent); outline-offset: 3px; }
+.socle-pied :focus-visible { outline-color: var(--wp--preset--color--fond); }
+.skip-link.screen-reader-text:focus { min-height: 48px; display: inline-flex; align-items: center; padding: 12px 20px !important; background: var(--wp--preset--color--encre) !important; color: var(--wp--preset--color--fond) !important; font-size: 1rem !important; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+/* ---------- Boutons ---------- */
+.wp-element-button, .wp-block-button__link { min-height: 52px; display: inline-flex; align-items: center; }
+.wp-block-button.is-style-outline > .wp-block-button__link { background: transparent; color: var(--wp--preset--color--encre); border: 2px solid currentColor; }
+.wp-block-button.is-style-outline > .wp-block-button__link:hover { background: var(--wp--preset--color--encre); color: var(--wp--preset--color--fond); }
+
+/* ---------- Contenus ---------- */
+/* Liens du contenu : zone de clic ≥ 32 px ; :where() = aucune priorité, toute classe (maquette, bouton) l'emporte */
+:where(.wp-block-post-content, .plan-du-site) a { display: inline-flex; align-items: center; min-height: 32px; text-underline-offset: 3px; }
+.plan-du-site ul { list-style: disc; padding-left: 1.4em; }
+.a-completer { background: #ffe58a; color: #141414; padding: 0 6px; font-weight: 600; }
+.wp-block-post-title { margin-bottom: var(--wp--preset--spacing--40); }

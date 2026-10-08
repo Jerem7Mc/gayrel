@@ -1,0 +1,24 @@
+# Gayrel — seuls le code et les sources du projet sont suivis.
+# Les contenus (pages, réalisations, actualités, réglages) sont dans la base MySQL « wp_gayrel »,
+# reconstruits par integration/construire.php.
+
+# Secrets et environnement local
+ACCES-LOCAL.txt
+certs/
+.caddy/
+.DS_Store
+*.log
+
+# WordPress : seul le thème du projet est suivi (les extensions socle-* le sont dans le dépôt socle-wp)
+wordpress/*
+!wordpress/wp-content/
+wordpress/wp-content/*
+!wordpress/wp-content/themes/
+wordpress/wp-content/themes/*
+!wordpress/wp-content/themes/socle-gutenberg/
+
+# Régénérable
+sauvegardes/
+rapports/
+mise-en-ligne/paquet/
+mise-en-ligne/wp-config-production.php

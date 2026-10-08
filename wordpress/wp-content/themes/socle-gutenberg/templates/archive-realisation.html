@@ -1,0 +1,53 @@
+<!-- wp:template-part {"slug":"header","area":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","anchor":"contenu","layout":{"type":"default"}} -->
+<main id="contenu" class="wp-block-group"><!-- wp:group {"className":"g-page-entete","layout":{"type":"default"}} -->
+<div class="wp-block-group g-page-entete"><!-- wp:shortcode -->
+[socle_fil_ariane]
+<!-- /wp:shortcode -->
+
+<!-- wp:query-title {"type":"archive","showPrefix":false} /-->
+
+<!-- wp:paragraph {"className":"g-page-entete__intro"} -->
+<p class="g-page-entete__intro">Façades, murs rideaux et menuiseries extérieures : une sélection de chantiers menés pour les professionnels et les collectivités en Occitanie.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<p class="g-geant" aria-hidden="true">Projets</p>
+<!-- /wp:html --></div>
+<!-- /wp:group -->
+
+<!-- wp:group {"className":"g-section","layout":{"type":"default"}} -->
+<div class="wp-block-group g-section"><!-- wp:shortcode -->
+[gayrel_filtres_secteurs]
+<!-- /wp:shortcode -->
+
+<!-- wp:query {"queryId":2,"query":{"inherit":true},"className":"g-grille"} -->
+<div class="wp-block-query g-grille"><!-- wp:post-template -->
+<!-- wp:group {"className":"g-carte-projet","layout":{"type":"default"}} -->
+<div class="wp-block-group g-carte-projet"><!-- wp:post-featured-image /-->
+
+<!-- wp:post-title {"level":2,"isLink":true} /-->
+
+<!-- wp:post-terms {"term":"secteur"} /--></div>
+<!-- /wp:group -->
+<!-- /wp:post-template -->
+
+<!-- wp:query-pagination -->
+<!-- wp:query-pagination-previous {"label":"Précédentes"} /-->
+<!-- wp:query-pagination-numbers /-->
+<!-- wp:query-pagination-next {"label":"Suivantes"} /-->
+<!-- /wp:query-pagination -->
+
+<!-- wp:query-no-results -->
+<!-- wp:paragraph -->
+<p>Aucune réalisation dans cette rubrique pour le moment.</p>
+<!-- /wp:paragraph -->
+<!-- /wp:query-no-results --></div>
+<!-- /wp:query --></div>
+<!-- /wp:group -->
+
+<!-- wp:pattern {"slug":"socle-gutenberg/appel"} /--></main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","area":"footer","tagName":"footer"} /-->

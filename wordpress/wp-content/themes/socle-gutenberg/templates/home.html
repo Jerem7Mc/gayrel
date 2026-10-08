@@ -1,0 +1,49 @@
+<!-- wp:template-part {"slug":"header","area":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","anchor":"contenu","layout":{"type":"default"}} -->
+<main id="contenu" class="wp-block-group"><!-- wp:group {"className":"g-page-entete","layout":{"type":"default"}} -->
+<div class="wp-block-group g-page-entete"><!-- wp:shortcode -->
+[socle_fil_ariane]
+<!-- /wp:shortcode -->
+
+<!-- wp:heading {"level":1} -->
+<h1 class="wp-block-heading">Actualités</h1>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"className":"g-page-entete__intro"} -->
+<p class="g-page-entete__intro">Chantiers en cours, livraisons et vie de l’entreprise.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group -->
+
+<!-- wp:group {"className":"g-section","layout":{"type":"default"}} -->
+<div class="wp-block-group g-section"><!-- wp:query {"queryId":1,"query":{"perPage":12,"inherit":true},"className":"g-grille"} -->
+<div class="wp-block-query g-grille"><!-- wp:post-template -->
+<!-- wp:group {"className":"g-carte-projet","layout":{"type":"default"}} -->
+<div class="wp-block-group g-carte-projet"><!-- wp:post-featured-image {"aspectRatio":"16/10"} /-->
+
+<!-- wp:post-date {"format":"j F Y"} /-->
+
+<!-- wp:post-title {"level":2,"isLink":true} /-->
+
+<!-- wp:post-excerpt {"excerptLength":24} /--></div>
+<!-- /wp:group -->
+<!-- /wp:post-template -->
+
+<!-- wp:query-pagination -->
+<!-- wp:query-pagination-previous {"label":"Précédentes"} /-->
+<!-- wp:query-pagination-numbers /-->
+<!-- wp:query-pagination-next {"label":"Suivantes"} /-->
+<!-- /wp:query-pagination -->
+
+<!-- wp:query-no-results -->
+<!-- wp:paragraph -->
+<p>Aucune actualité pour le moment.</p>
+<!-- /wp:paragraph -->
+<!-- /wp:query-no-results --></div>
+<!-- /wp:query --></div>
+<!-- /wp:group -->
+
+<!-- wp:pattern {"slug":"socle-gutenberg/appel"} /--></main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","area":"footer","tagName":"footer"} /-->
