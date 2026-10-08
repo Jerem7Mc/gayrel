@@ -504,6 +504,7 @@ $id_showroom = g_page( 'showroom', 'Showroom',
 				. '<!-- wp:shortcode -->' . "\n[socle_horaires]\n<!-- /wp:shortcode -->\n"
 				. g_boutons( [ $cta( 'Prendre rendez-vous', '/contact/' ) ] ) )
 			. g_image( $m['entreprise'], '', 'large' ) ) )
+	. g_groupe( 'g-section', g_titre( 'Plan d’accès' ) . '<!-- wp:shortcode -->' . "\n[socle_plan]\n<!-- /wp:shortcode -->\n" )
 	. '<!-- wp:pattern {"slug":"socle-gutenberg/appel"} /-->',
 	'Profilés, couleurs, finitions et vitrages : découvrez nos menuiseries aluminium à Gaillac.',
 	'', 0, 4,
@@ -524,9 +525,10 @@ $id_contact = get_page_by_path( 'contact' )?->ID;
 $id_contact = g_page( 'contact', 'Contact',
 	g_groupe( 'g-section g-contact-page',
 		g_groupe( 'g-contact-formulaire', g_titre( 'Envoyez-nous un message' ) . '<!-- wp:shortcode -->' . "\n[socle_formulaire]\n<!-- /wp:shortcode -->\n" )
-		. $coordonnees ),
+		. $coordonnees )
+	. g_groupe( 'g-section', g_titre( 'Nous trouver' ) . '<!-- wp:shortcode -->' . "\n[socle_plan]\n<!-- /wp:shortcode -->\n" ),
 	'Une question, un projet ? Écrivez-nous ou appelez-nous : notre équipe vous répond dans les plus brefs délais.',
-	'', 0, 7,
+	'', 0, 6,
 	'Contacter Gayrel, menuiserie aluminium à Gaillac (Tarn) : 13 avenue de l’Europe, ZAC de Roumagnac. Téléphone 05 63 81 42 42.'
 );
 $id_devis = g_page( 'devis', 'Demande de devis',
@@ -537,7 +539,7 @@ $id_devis = g_page( 'devis', 'Demande de devis',
 			. '<!-- wp:shortcode -->' . "\n[socle_formulaire]\n<!-- /wp:shortcode -->\n" )
 		. $coordonnees ),
 	'Professionnels, collectivités ou particuliers : notre bureau d’étude étudie votre projet et vous adresse une proposition détaillée.',
-	'', 0, 6,
+	'', 0, 7,
 	'Demande de devis pour vos menuiseries et façades aluminium sur mesure : professionnels, marchés publics et particuliers. Gayrel, Gaillac (Tarn).'
 );
 
@@ -617,10 +619,36 @@ echo "✓ actualités\n";
 
 wp_get_theme()->delete_pattern_cache(); // compositions du thème (pied de page, appel) relues
 
-// Grand mot décoratif de l'en-tête des pages intérieures (inc/gayrel.php)
-foreach ( [ $id_habitat => 'Habitat', $id_batiment => 'Bâtiment', $id_showroom => 'Showroom', $id_actus => 'Actus', $id_contact => 'Contact', $id_devis => 'Devis' ] as $pid => $mot ) {
+// En-tête des pages intérieures : photo (image mise en avant) et grand mot décoratif (inc/gayrel.php)
+$photo = fn( $f ) => g_media( "$actuel/$f", '', pathinfo( $f, PATHINFO_FILENAME ) );
+$id_ml = get_page_by_path( 'mentions-legales' )->ID;
+$id_pc = get_page_by_path( 'politique-de-confidentialite' )->ID;
+$id_pl = get_page_by_path( 'plan-du-site' )->ID;
+$entetes = [
+	$id_entreprise => [ 'Entreprise', $m['atelier'] ],
+	$id_habitat    => [ 'Habitat', $m['particulier'] ],
+	$id_batiment   => [ 'Bâtiment', $m['pro'] ],
+	$id_showroom   => [ 'Showroom', $m['entreprise'] ],
+	$id_actus      => [ 'Actus', $photo( 'claystone-1.jpg' ) ],
+	$id_contact    => [ 'Contact', $photo( 'blagnac-landing-5.jpg' ) ],
+	$id_devis      => [ 'Devis', $photo( 'Socotrap-Airbus-New-Periport-7.jpg' ) ],
+	$id_ml         => [ 'Mentions', $m['immeuble'] ],
+	$id_pc         => [ 'Données', $m['immeuble'] ],
+	$id_pl         => [ 'Plan', $m['immeuble'] ],
+];
+foreach ( $entetes as $pid => [ $mot, $img ] ) {
 	update_post_meta( $pid, '_gayrel_mot', $mot );
+	if ( $img ) {
+		set_post_thumbnail( $pid, $img );
+	}
 }
+update_option( 'gayrel_image_realisations', $photo( 'safran.jpg' ) );
+update_option( 'gayrel_image_404', $photo( 'aerocampus-blagna-zoom.jpg' ) );
+// Plan du site : pages légales en fin de liste, rubrique Réalisations après Actualités (socle-realisations)
+foreach ( [ $id_ml => 8, $id_pc => 9, $id_pl => 10 ] as $pid => $ordre ) {
+	wp_update_post( [ 'ID' => $pid, 'menu_order' => $ordre ] );
+}
+update_option( 'socle_realisations_plan_apres', $id_actus );
 update_option( 'show_on_front', 'page' );
 update_option( 'page_on_front', $accueil );
 update_option( 'page_for_posts', $id_actus );

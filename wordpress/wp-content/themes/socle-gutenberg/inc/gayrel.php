@@ -48,25 +48,48 @@ add_action( 'wp_enqueue_scripts', function () {
 // Éditeur : les pages s'ouvrent avec leur modèle (en-tête, pied, mise en page réelle), comme sur le site
 add_action( 'init', fn() => add_post_type_support( 'page', 'editor', [ 'default-mode' => 'template-locked' ] ), 20 );
 
-// Accueil : titre des réalisations empilées (assets/js/realisations.js)
+// Accueil : mot GAYREL au défilement, titre des réalisations empilées (assets/js/accueil.js)
 add_action( 'wp_enqueue_scripts', function () {
 	if ( is_front_page() ) {
-		$f = get_stylesheet_directory() . '/assets/js/realisations.js';
-		wp_enqueue_script( 'gayrel-realisations', get_stylesheet_directory_uri() . '/assets/js/realisations.js', [], filemtime( $f ), [ 'strategy' => 'defer', 'in_footer' => true ] );
+		$f = get_stylesheet_directory() . '/assets/js/accueil.js';
+		wp_enqueue_script( 'gayrel-accueil', get_stylesheet_directory_uri() . '/assets/js/accueil.js', [], filemtime( $f ), [ 'strategy' => 'defer', 'in_footer' => true ] );
 	}
 } );
 
-// En-tête des pages intérieures : grand mot décoratif de la maquette (méta _gayrel_mot de la page), masqué aux
-// lecteurs d'écran ; la page des articles utilise celui de la page « Actualités »
+// En-tête des pages intérieures (bandeau photo de hauteur fixe) : photo de fond quand le modèle n'en a pas (page des
+// articles, archive des réalisations, article) et grand mot décoratif masqué aux lecteurs d'écran (méta _gayrel_mot)
 add_filter( 'render_block_core/group', function ( $html, $bloc ) {
-	if ( ! str_contains( $bloc['attrs']['className'] ?? '', 'g-page-entete' ) || str_contains( $html, 'g-geant' ) ) {
+	if ( ! str_contains( $bloc['attrs']['className'] ?? '', 'g-page-entete' ) ) {
 		return $html;
 	}
-	$id  = is_home() ? (int) get_option( 'page_for_posts' ) : ( is_page() ? get_queried_object_id() : 0 );
-	$mot = $id ? trim( (string) get_post_meta( $id, '_gayrel_mot', true ) ) : '';
-	if ( '' === $mot ) {
-		return $html;
+	$page = is_home() ? (int) get_option( 'page_for_posts' ) : ( is_singular() ? get_queried_object_id() : 0 );
+	// Photo
+	if ( ! str_contains( $html, 'wp-block-post-featured-image' ) && ! str_contains( $html, 'g-page-entete__photo' ) ) {
+		$img = $page ? get_post_thumbnail_id( $page ) : 0;
+		if ( ! $img && ( is_post_type_archive( 'realisation' ) || is_tax( 'secteur' ) ) ) {
+			$img = (int) get_option( 'gayrel_image_realisations' );
+		}
+		if ( ! $img && is_404() ) {
+			$img = (int) get_option( 'gayrel_image_404' );
+		}
+		if ( $img ) {
+			$photo = '<figure class="wp-block-post-featured-image g-page-entete__photo">' . wp_get_attachment_image( $img, 'full', false, [ 'alt' => '', 'loading' => 'eager', 'fetchpriority' => 'high', 'sizes' => '100vw' ] ) . '</figure>';
+			$html  = preg_replace( '/(<div\b[^>]*\bg-page-entete\b[^>]*>)/', '$1' . $photo, $html, 1 );
+		}
 	}
-	$pos = strrpos( $html, '</div>' );
-	return substr( $html, 0, $pos ) . '<p class="g-geant" aria-hidden="true">' . esc_html( $mot ) . '</p>' . substr( $html, $pos );
+	if ( str_contains( $html, 'wp-block-post-featured-image' ) && ! str_contains( $html, 'g-page-entete--image' ) ) {
+		$html = preg_replace( '/\bg-page-entete\b/', 'g-page-entete g-page-entete--image', $html, 1 );
+	}
+	// Grand mot décoratif (même couleur que le fond de la page)
+	if ( ! str_contains( $html, 'g-geant' ) ) {
+		$mot = $page ? trim( (string) get_post_meta( $page, '_gayrel_mot', true ) ) : '';
+		if ( '' === $mot ) {
+			$mot = is_404() ? '404' : ( is_singular( 'realisation' ) ? 'Projet' : ( is_singular( 'post' ) ? 'Actus' : '' ) );
+		}
+		if ( '' !== $mot ) {
+			$pos  = strrpos( $html, '</div>' );
+			$html = substr( $html, 0, $pos ) . '<p class="g-geant" aria-hidden="true">' . esc_html( $mot ) . '</p>' . substr( $html, $pos );
+		}
+	}
+	return $html;
 }, 10, 2 );

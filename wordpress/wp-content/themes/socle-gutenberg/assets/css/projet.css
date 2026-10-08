@@ -59,9 +59,14 @@ body { overflow-x: clip; }
 	content: "";
 	width: 24px; height: 24px; flex: none;
 	background: var(--g-fleche-c);
-	-webkit-mask: url("../icones/fleche-grande.svg") center / 8px 8px no-repeat;
-	mask: url("../icones/fleche-grande.svg") center / 8px 8px no-repeat;
-	transition: -webkit-mask-size .45s cubic-bezier(.2, .7, .2, 1), mask-size .45s cubic-bezier(.2, .7, .2, 1), background-color .3s ease;
+	--g-f-repos: 8px;
+	--g-f-survol: 20px;
+	-webkit-mask-image: url("../icones/fleche-grande.svg"), url("../icones/fleche-grande.svg");
+	mask-image: url("../icones/fleche-grande.svg"), url("../icones/fleche-grande.svg");
+	-webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+	-webkit-mask-position: center, 0% 100%; mask-position: center, 0% 100%;
+	-webkit-mask-size: var(--g-f-repos) var(--g-f-repos), 0 0; mask-size: var(--g-f-repos) var(--g-f-repos), 0 0;
+	transition: -webkit-mask-size .9s cubic-bezier(.65, 0, .35, 1), mask-size .9s cubic-bezier(.65, 0, .35, 1), -webkit-mask-position .9s cubic-bezier(.65, 0, .35, 1), mask-position .9s cubic-bezier(.65, 0, .35, 1), background-color .3s ease;
 }
 .g-cta .wp-block-button__link::before {
 	content: "";
@@ -72,12 +77,19 @@ body { overflow-x: clip; }
 }
 .g-cta .wp-block-button__link:is(:hover, :focus-visible) { color: var(--wp--preset--color--fond); border-color: var(--g-b2); background-color: var(--g-b2); }
 .g-cta .wp-block-button__link:is(:hover, :focus-visible)::before { transform: translateY(-100%); }
-.g-cta .wp-block-button__link:is(:hover, :focus-visible)::after { background: var(--wp--preset--color--fond); -webkit-mask-size: 20px 20px; mask-size: 20px 20px; }
+.g-cta .wp-block-button__link:is(:hover, :focus-visible)::after,
+.g-acces a:is(:hover, :focus-visible)::after,
+.g-carte-projet:hover .wp-block-post-title a::after,
+.g-carte-projet .wp-block-post-title a:focus-visible::after {
+	-webkit-mask-position: 100% 0%, center; mask-position: 100% 0%, center;
+	-webkit-mask-size: 0 0, var(--g-f-survol) var(--g-f-survol); mask-size: 0 0, var(--g-f-survol) var(--g-f-survol);
+}
+.g-cta .wp-block-button__link:is(:hover, :focus-visible)::after { background: var(--wp--preset--color--fond); }
 .g-cta .wp-block-button__link:active { --g-b2: var(--wp--preset--color--roi); }
 /* Fond sombre (cartes bleu nuit, bandeau d'appel) : contour blanc, survol gris puis bleu */
 .g-cta--clair .wp-block-button__link {
 	--g-texte: var(--wp--preset--color--fond);
-	--g-fleche-c: var(--wp--preset--color--fond);
+	--g-fleche-c: var(--wp--preset--color--accent);
 	--g-b1: var(--wp--preset--color--fond-2);
 	--g-b2: var(--wp--preset--color--accent);
 }
@@ -242,7 +254,8 @@ body { overflow-x: clip; }
    cadrage, sinon ils se décalent ; le cadrage laisse voir le ciel en haut (le mot GAYREL s'y glisse derrière le toit). */
 .g-hero__ciel img, .g-hero__batiment img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; display: block; }
 .g-hero__marque {
-	position: absolute; left: 50%; top: 12%;
+	position: absolute; left: 50%; top: 6%;
+	translate: 0 calc(var(--g-defile, 0) * 55%);
 	transform: translateX(-50%);
 	font-size: clamp(5rem, 18.2vw, 21.875rem);
 	font-weight: 600;
@@ -294,15 +307,18 @@ body { overflow-x: clip; }
 	transition: transform .55s cubic-bezier(.6, 0, .2, 1);
 }
 .g-acces a::after {
+	--g-f-repos: 40px; --g-f-survol: 40px;
 	content: ""; width: 48px; height: 48px; flex: none;
 	background: currentColor;
-	-webkit-mask: var(--g-fleche) center / contain no-repeat;
-	mask: var(--g-fleche) center / contain no-repeat;
-	transition: transform .4s cubic-bezier(.2, .7, .2, 1), background-color .35s ease;
+	-webkit-mask-image: url("../icones/fleche-grande.svg"), url("../icones/fleche-grande.svg"); mask-image: url("../icones/fleche-grande.svg"), url("../icones/fleche-grande.svg");
+	-webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+	-webkit-mask-position: center, 0% 100%; mask-position: center, 0% 100%;
+	-webkit-mask-size: var(--g-f-repos) var(--g-f-repos), 0 0; mask-size: var(--g-f-repos) var(--g-f-repos), 0 0;
+	transition: -webkit-mask-size .9s cubic-bezier(.65, 0, .35, 1), mask-size .9s cubic-bezier(.65, 0, .35, 1), -webkit-mask-position .9s cubic-bezier(.65, 0, .35, 1), mask-position .9s cubic-bezier(.65, 0, .35, 1), background-color .35s ease;
 }
 .g-acces a:is(:hover, :focus-visible) { color: var(--wp--preset--color--encre); border-color: var(--wp--preset--color--encre); background-color: var(--wp--preset--color--fond); transition: color .35s ease .1s, border-color .35s ease, background-color 0s linear .55s; }
 .g-acces a:is(:hover, :focus-visible)::before { transform: translateY(-100%); }
-.g-acces a:is(:hover, :focus-visible)::after { background: var(--wp--preset--color--accent); transform: scale(1.25); }
+.g-acces a:is(:hover, :focus-visible)::after { background: var(--wp--preset--color--accent); }
 .g-acces a:active { color: var(--wp--preset--color--accent); border-color: var(--wp--preset--color--accent); }
 .g-acces a:focus-visible { outline-color: var(--wp--preset--color--fond); }
 
@@ -373,7 +389,7 @@ body { overflow-x: clip; }
 	padding: 0 !important; max-width: none !important;
 }
 .g-services > * { margin: 0 !important; }
-.g-services__titre { position: absolute; left: calc(50% + 12px); top: clamp(40px, 7vw, 135px); color: var(--wp--preset--color--fond-2); }
+.g-services__titre { position: absolute; left: calc(50% + 12px); top: auto; bottom: calc(100% - var(--g-decal) + 22px); line-height: .9 !important; translate: 0 .07em; color: var(--wp--preset--color--fond-2); } /* avec un interligne de 0,9, la ligne de base est 0,07 em au-dessus du bas de la boîte */
 .g-service {
 	--g-p: clamp(24px, 3.4vw, 66px);
 	position: relative; overflow: hidden;
@@ -397,6 +413,7 @@ body { overflow-x: clip; }
 .g-service > * { position: relative; max-width: 609px; margin: 0 !important; }
 .g-service h3 { font-size: 2rem; line-height: .95; font-weight: 500; color: inherit; margin: 0 0 24px !important; max-width: 430px; }
 .g-service p, .g-service > p { margin: 0 0 24px !important; }
+.g-service .wp-block-buttons { margin-bottom: clamp(56px, 7vw, 128px) !important; } /* air entre le bouton et le grand mot */
 /* En flux : le grand mot se cale en bas de la carte, la photo détourée le recouvre à moitié (jamais sur le texte) */
 .g-service .g-geant, .g-service > .wp-block-html {
 	margin-top: auto !important;
@@ -426,7 +443,7 @@ body { overflow-x: clip; }
 @keyframes g-glisse-geant { from { transform: translateX(12%); } }
 @media (max-width: 900px) {
 	.g-services { grid-template-columns: 1fr; }
-	.g-services__titre { position: static; padding: 0 8px; font-size: clamp(3.5rem, 15vw, 6rem); }
+	.g-services__titre { position: static; padding: 0 8px; font-size: clamp(3.5rem, 15vw, 6rem); line-height: .9 !important; }
 	.g-service { min-height: 0; padding-top: 40px !important; }
 	.g-service--part { margin-top: 0 !important; }
 	.g-service .g-geant { font-size: clamp(3.5rem, 17vw, 7rem); margin-top: 24px !important; }
@@ -464,7 +481,7 @@ body { overflow-x: clip; }
 .g-projets .wp-block-post:nth-child(3) { --g-i: 2; }
 .g-projets .wp-block-post:nth-child(4) { --g-i: 3; }
 /* clavier : la carte qui a le focus passe devant celle qui l'empile (RGAA 10.7) */
-.g-projets .wp-block-post:focus-within { z-index: 4; }
+.g-projets .wp-block-post:focus-within { z-index: 4; position: relative; top: auto; } /* décollée : elle défile jusqu'à être visible (jamais sous le bandeau cookies) */
 .g-projets::after {
 	content: ""; grid-column: 1 / -1; grid-row: 1; align-self: end;
 	position: sticky; bottom: 0; height: min(220px, 18vh); z-index: 2; pointer-events: none;
@@ -481,15 +498,18 @@ body { overflow-x: clip; }
 	min-height: 32px; text-decoration: none; color: var(--wp--preset--color--encre);
 }
 .g-carte-projet .wp-block-post-title a::after {
+	--g-f-repos: 8px; --g-f-survol: 20px;
 	content: ""; width: 24px; height: 24px; flex: none; background: var(--wp--preset--color--accent);
-	-webkit-mask: var(--g-fleche) center / contain no-repeat; mask: var(--g-fleche) center / contain no-repeat;
-	transition: transform .4s cubic-bezier(.2, .7, .2, 1);
+	-webkit-mask-image: url("../icones/fleche-grande.svg"), url("../icones/fleche-grande.svg"); mask-image: url("../icones/fleche-grande.svg"), url("../icones/fleche-grande.svg");
+	-webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+	-webkit-mask-position: center, 0% 100%; mask-position: center, 0% 100%;
+	-webkit-mask-size: var(--g-f-repos) var(--g-f-repos), 0 0; mask-size: var(--g-f-repos) var(--g-f-repos), 0 0;
+	transition: -webkit-mask-size .9s cubic-bezier(.65, 0, .35, 1), mask-size .9s cubic-bezier(.65, 0, .35, 1), -webkit-mask-position .9s cubic-bezier(.65, 0, .35, 1), mask-position .9s cubic-bezier(.65, 0, .35, 1);
 }
 /* Toute la carte est cliquable par le lien du titre (une seule cible pour le clavier) */
 .g-carte-projet .wp-block-post-title a::before { content: ""; position: absolute; inset: 0; z-index: 1; }
 .g-carte-projet:hover .wp-block-post-featured-image img { transform: scale(1.04); }
-.g-carte-projet:hover .wp-block-post-title a::after,
-.g-carte-projet .wp-block-post-title a:focus-visible::after { transform: scale(1.6); }
+
 /* Pastille « Voir le projet » au survol (composant Card Réalisation) */
 .g-carte-projet .wp-block-post-featured-image { position: relative; }
 .g-carte-projet .wp-block-post-featured-image::after {
@@ -526,7 +546,7 @@ body { overflow-x: clip; }
 .g-duo__texte > *:not(.g-geant) { max-width: 609px; position: relative; z-index: 1; }
 .g-duo__texte h2 { font-size: 2rem; line-height: .9; margin: 0 0 24px; max-width: 475px !important; }
 .g-duo__texte p { margin: 0 !important; color: #000; }
-.g-duo__texte .wp-block-buttons { margin-top: 24px !important; }
+.g-duo__texte .wp-block-buttons { margin-top: clamp(28px, 2.5vw, 40px) !important; }
 .g-duo__texte .g-geant { position: absolute; left: 0; bottom: 0; color: var(--wp--preset--color--fond-2); font-size: clamp(5rem, 11.4vw, 13.75rem); line-height: .73; /* hauteur des capitales de Manrope : le pied des lettres touche le trait */ }
 .g-duo--entreprise { padding-top: 24px !important; padding-bottom: 0 !important; }
 .g-duo--entreprise .g-duo__visuel { margin-bottom: 24px !important; }
@@ -693,12 +713,15 @@ body { overflow-x: clip; }
 }
 .g-page-entete__intro { font-size: 1.25rem; max-width: 760px !important; margin: 0; }
 .g-page-entete .g-geant { position: absolute; right: -.04em; bottom: -.14em; color: var(--wp--preset--color--fond); z-index: 0; max-width: none; }
+.g-page-entete--image .g-geant { z-index: 1; } /* net, au-dessus du voile : la couleur du fond de page « découpe » la photo */
 @media (max-width: 900px) { .g-page-entete:has(> .g-geant) { padding-bottom: clamp(64px, 16vw, 96px) !important; } }
-.g-page-entete--image { background: #1e2026; color: var(--wp--preset--color--fond); min-height: clamp(480px, 60vh, 720px); display: flex; flex-direction: column; justify-content: flex-end; }
+.g-page-entete--image { background: #1e2026; color: var(--wp--preset--color--fond); height: clamp(460px, 62vh, 640px); min-height: 0; padding-bottom: clamp(64px, 7vw, 120px) !important; display: flex; flex-direction: column; justify-content: flex-end; }
+.single-post .g-page-entete--image h1, .single-post .g-page-entete--image .wp-block-post-title { font-size: clamp(2rem, 4.2vw, 4.5rem); }
+@media (max-width: 900px) { .g-page-entete--image { height: 540px; } }
 .g-page-entete--image > .wp-block-image, .g-page-entete--image > .wp-block-post-featured-image { position: absolute; inset: 0; margin: 0; max-width: none; z-index: 0; }
 .g-page-entete--image > .wp-block-image img, .g-page-entete--image > .wp-block-post-featured-image img { width: 100%; height: 100%; object-fit: cover; }
 .g-page-entete--image::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(30, 32, 38, .45) 0%, rgba(30, 32, 38, .55) 45%, rgba(30, 32, 38, .9) 100%); z-index: 0; }
-.g-page-entete--image h1, .g-page-entete--image .wp-block-post-title { color: var(--wp--preset--color--fond); }
+.g-page-entete--image h1, .g-page-entete--image .wp-block-post-title, .g-page-entete--image .wp-block-query-title { color: var(--wp--preset--color--fond); }
 .g-page-entete--image .socle-ariane, .g-page-entete--image .socle-ariane a { color: var(--wp--preset--color--fond); }
 
 .g-section { max-width: 1678px; margin: clamp(48px, 6vw, 120px) auto !important; padding: 0 var(--g-marge) !important; }
@@ -779,7 +802,7 @@ body { overflow-x: clip; }
 .g-coordonnees { background: var(--wp--preset--color--nuit); color: var(--wp--preset--color--fond); border-radius: var(--g-rayon); padding: 32px !important; }
 .g-coordonnees h2 { font-size: 1.5rem; color: inherit; margin: 0 0 16px; }
 .g-coordonnees a { color: inherit; }
-.g-coordonnees .socle-coordonnees { display: flex; flex-direction: column; gap: 4px; font-style: normal; }
+.g-coordonnees .socle-coordonnees { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; font-style: normal; }
 .g-coordonnees .socle-coordonnees > span[aria-hidden] { display: none; }
 .g-coordonnees .socle-horaires { padding-left: 0; list-style: none; }
 .g-coordonnees :focus-visible { outline-color: var(--wp--preset--color--fond); }
@@ -825,3 +848,39 @@ body { overflow-x: clip; }
 .socle-form__envoyer { min-height: 62px; padding: 8px 20px; border-radius: var(--g-rayon); font-size: 1.25rem; font-weight: 400; border: 1px solid var(--wp--preset--color--accent); transition: background-color .3s ease, color .3s ease, border-color .3s ease; }
 .socle-form__envoyer:hover { background: var(--wp--preset--color--roi); border-color: var(--wp--preset--color--roi); color: var(--wp--preset--color--sur-accent); }
 .socle-form__envoyer:active { background: var(--wp--preset--color--encre); border-color: var(--wp--preset--color--encre); }
+
+/* Plan d'accès Google Maps en façade (socle-base, [socle_plan]) */
+.socle-plan { --socle-plan-rayon: var(--g-rayon); background: repeating-linear-gradient(108deg, transparent 0 calc(33.3% - 1px), rgba(7, 17, 94, .08) calc(33.3% - 1px) 33.3%), var(--wp--preset--color--fond-2); color: var(--wp--preset--color--encre); }
+.socle-plan__afficher { background: var(--wp--preset--color--accent) !important; border-color: var(--wp--preset--color--accent) !important; color: var(--wp--preset--color--sur-accent) !important; font-size: 1.125rem !important; }
+.socle-plan__afficher:hover { background: var(--wp--preset--color--roi) !important; border-color: var(--wp--preset--color--roi) !important; }
+
+/* Bandeau et panneau de consentement (socle-rgpd) aux couleurs du site */
+:root {
+	--socle-rgpd-fond: var(--wp--preset--color--fond);
+	--socle-rgpd-texte: var(--wp--preset--color--encre);
+	--socle-rgpd-trait: var(--wp--preset--color--doux);
+	--socle-rgpd-bouton-fond: var(--wp--preset--color--accent);
+	--socle-rgpd-bouton-texte: var(--wp--preset--color--sur-accent);
+	--socle-rgpd-rayon: 4px;
+	--socle-rgpd-police: var(--wp--preset--font-family--texte);
+}
+
+/* De l'air entre un texte et le bouton qui le suit (blocs texte, cartes, bandeau d'appel) */
+:where(p, ul, ol, .wp-block-list) + .wp-block-buttons { margin-top: clamp(28px, 2.5vw, 40px) !important; }
+.g-service p, .g-appel p { margin-bottom: 0 !important; }
+
+/* Contact / devis : l'encart des coordonnées reste visible au défilement, à côté du formulaire */
+@media (min-width: 901px) {
+	.g-coordonnees { position: sticky; top: 24px; }
+	.admin-bar .g-coordonnees { top: 56px; }
+}
+
+/* Les cartes d'accès du visuel sont des liens-boîtes : pas de soulignement animé des liens de texte (socle-base) */
+.g-acces a, .g-acces a:is(:hover, :focus-visible) {
+	background-image: repeating-linear-gradient(105deg, transparent 0 140px, rgba(243, 244, 246, .18) 140px 141px);
+	background-size: auto; background-position: 0 0; background-repeat: repeat;
+	text-decoration: none;
+}
+
+/* Liens dans les textes des modèles (404…) : zone de clic ≥ 32 px comme dans le contenu des pages */
+:is(.g-bloc__texte, .g-duo__texte, .g-texte, .g-page-entete__intro) p a { display: inline-flex; align-items: center; min-height: 32px; }

@@ -1,25 +1,45 @@
 <!-- wp:template-part {"slug":"header","area":"header","tagName":"header"} /-->
 
-<!-- wp:group {"tagName":"main","anchor":"contenu","className":"socle-erreur","style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80"}}},"layout":{"type":"constrained","contentSize":"1320px"}} -->
-<main id="contenu" class="wp-block-group socle-erreur" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--80)"><!-- wp:group {"layout":{"type":"constrained","contentSize":"40rem","justifyContent":"left"}} -->
-<div class="wp-block-group"><!-- wp:heading {"level":1} -->
-<h1 class="wp-block-heading">Oups, cette page s'est égarée.</h1>
+<!-- wp:group {"tagName":"main","anchor":"contenu","layout":{"type":"default"}} -->
+<main id="contenu" class="wp-block-group"><!-- wp:group {"className":"g-page-entete","layout":{"type":"default"}} -->
+<div class="wp-block-group g-page-entete"><!-- wp:heading {"level":1} -->
+<h1 class="wp-block-heading">Page introuvable</h1>
 <!-- /wp:heading -->
 
-<!-- wp:paragraph {"textColor":"doux","fontSize":"grand"} -->
-<p class="has-doux-color has-text-color has-grand-font-size">Elle n'existe pas ou a changé d'adresse. Pas d'inquiétude : tout le reste du site est bien là.</p>
+<!-- wp:paragraph {"className":"g-page-entete__intro"} -->
+<p class="g-page-entete__intro">Cette page n’existe pas ou a changé d’adresse. Tout le reste du site est bien là.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group -->
+
+<!-- wp:group {"className":"g-section","layout":{"type":"default"}} -->
+<div class="wp-block-group g-section"><!-- wp:group {"className":"g-bloc","layout":{"type":"default"}} -->
+<div class="wp-block-group g-bloc"><!-- wp:group {"className":"g-bloc__texte g-cube","layout":{"type":"default"}} -->
+<div class="wp-block-group g-bloc__texte g-cube"><!-- wp:heading -->
+<h2 class="wp-block-heading">Où souhaitez-vous aller ?</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Retrouvez nos solutions en menuiserie et façade aluminium, nos chantiers récents ou contactez directement notre équipe. Le <a href="/plan-du-site/">plan du site</a> recense toutes les pages.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:buttons -->
-<div class="wp-block-buttons"><!-- wp:button -->
-<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="/">Retour à l'accueil</a></div>
+<div class="wp-block-buttons"><!-- wp:button {"className":"g-cta"} -->
+<div class="wp-block-button g-cta"><a class="wp-block-button__link wp-element-button" href="/">Retour à l’accueil</a></div>
 <!-- /wp:button -->
 
-<!-- wp:button {"className":"is-style-outline"} -->
-<div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button" href="/plan-du-site/">Voir le plan du site</a></div>
+<!-- wp:button {"className":"g-cta"} -->
+<div class="wp-block-button g-cta"><a class="wp-block-button__link wp-element-button" href="/realisations/">Voir nos réalisations</a></div>
+<!-- /wp:button -->
+
+<!-- wp:button {"className":"g-cta"} -->
+<div class="wp-block-button g-cta"><a class="wp-block-button__link wp-element-button" href="/contact/">Nous contacter</a></div>
 <!-- /wp:button --></div>
 <!-- /wp:buttons --></div>
-<!-- /wp:group --></main>
+<!-- /wp:group --></div>
+<!-- /wp:group --></div>
+<!-- /wp:group -->
+
+<!-- wp:pattern {"slug":"socle-gutenberg/appel"} /--></main>
 <!-- /wp:group -->
 
 <!-- wp:template-part {"slug":"footer","area":"footer","tagName":"footer"} /-->
