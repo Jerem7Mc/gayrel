@@ -53,7 +53,7 @@ body { overflow-x: clip; }
 	background: var(--wp--preset--color--accent);
 	-webkit-mask: var(--g-fleche) center / contain no-repeat;
 	mask: var(--g-fleche) center / contain no-repeat;
-	transition: background-color .25s ease, transform .3s ease;
+	transition: background-color .25s ease, transform .4s cubic-bezier(.2, .7, .2, 1);
 }
 /* Survol : la flèche grossit */
 .g-cta .wp-block-button__link:is(:hover, :focus-visible)::after { transform: scale(1.45); }
@@ -127,22 +127,23 @@ body { overflow-x: clip; }
 .g-entete .wp-block-navigation { font-size: 1.25rem; gap: 8px; }
 .g-entete .wp-block-navigation .wp-block-navigation__container { gap: 8px; }
 .g-entete .wp-block-navigation-item__content,
-.g-entete__outils a {
+.g-entete__outils p a {
 	display: inline-flex; align-items: center; gap: 8px;
-	min-height: 46px; padding: 12px;
+	box-sizing: border-box; min-height: 46px; height: 46px; padding: 12px;
 	border-radius: var(--g-rayon);
 	color: var(--wp--preset--color--encre);
 	text-decoration: none;
 	line-height: 1.1;
-	transition: background-color .2s ease, color .2s ease;
+	transition: color .2s ease;
 }
 .g-entete .wp-block-navigation-item__content:hover,
-.g-entete__outils a:hover { background: var(--wp--preset--color--fond-2); color: var(--wp--preset--color--encre); }
+.g-entete__outils p a:hover { color: var(--wp--preset--color--accent); }
 .g-entete .wp-block-navigation [aria-current="page"],
-.g-entete .current-menu-item > .wp-block-navigation-item__content { text-decoration: none; color: var(--wp--preset--color--nuit); background: var(--wp--preset--color--fond-2); }
+.g-entete .current-menu-item > .wp-block-navigation-item__content { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; color: var(--wp--preset--color--nuit); }
 .g-entete__outils { gap: 8px; display: flex; align-items: center; flex-wrap: nowrap; }
 .g-entete nav.g-pastille { padding: 8px; }
 .g-entete .g-nav .wp-block-navigation__container { background: none; padding: 0; min-height: 0; border-radius: 0; height: auto; }
+.g-entete .g-nav :is(.wp-block-navigation__responsive-container:not(.is-menu-open), .wp-block-navigation__responsive-close, .wp-block-navigation__responsive-dialog, .wp-block-navigation__responsive-container-content) { height: 46px; }
 .g-entete__outils p { margin: 0; font-size: 1.25rem; }
 .g-entete__tel a::before {
 	content: ""; width: 23px; height: 23px; flex: none;
@@ -229,7 +230,7 @@ body { overflow-x: clip; }
    cadrage, sinon ils se décalent ; le cadrage laisse voir le ciel en haut (le mot GAYREL s'y glisse derrière le toit). */
 .g-hero__ciel img, .g-hero__batiment img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; display: block; }
 .g-hero__marque {
-	position: absolute; left: 50%; top: 13%;
+	position: absolute; left: 50%; top: 7%;
 	transform: translateX(-50%);
 	font-size: clamp(5rem, 18.2vw, 21.875rem);
 	font-weight: 600;
@@ -258,34 +259,39 @@ body { overflow-x: clip; }
 	z-index: 2;
 	display: grid; grid-template-columns: repeat(2, minmax(0, 431px)); gap: 16px;
 }
-.g-acces { margin: 0; }
+.g-acces, .g-hero__acces > * { margin: 0 !important; } /* l'éditeur ajoute l'espacement entre blocs */
 .g-acces a {
 	position: relative; overflow: hidden; isolation: isolate;
 	display: flex; align-items: flex-end; justify-content: space-between; gap: 16px;
 	min-height: 136px; padding: 16px 20px 20px 16px;
+	border: 1px solid transparent;
 	border-radius: var(--g-rayon);
-	background: var(--wp--preset--color--accent);
+	background-color: var(--wp--preset--color--accent);
+	/* fines diagonales du composant « CTA - Accueil » */
+	background-image: repeating-linear-gradient(105deg, transparent 0 140px, rgba(243, 244, 246, .18) 140px 141px);
 	color: var(--wp--preset--color--fond);
+	transition: color .35s ease .1s, border-color .35s ease;
 	font-size: clamp(1.375rem, 1.7vw, 2rem); font-weight: 500; line-height: 1;
 	text-decoration: none;
 }
-.g-acces--batiment a { background: var(--wp--preset--color--nuit); }
-/* fines diagonales du composant « CTA - Accueil » */
+.g-acces--batiment a { background-color: var(--wp--preset--color--nuit); }
+/* Survol (états Hover / Pressed de Figma) : un rideau gris puis blanc monte depuis le bas */
 .g-acces a::before {
-	content: ""; position: absolute; inset: 0; z-index: -1;
-	background: repeating-linear-gradient(105deg, transparent 0 140px, rgba(243, 244, 246, .18) 140px 141px);
-	transition: transform .4s ease;
+	content: ""; position: absolute; left: -10px; right: -10px; top: 100%; height: 200%; z-index: -1; /* gris puis blanc, chacun de la hauteur de la carte */
+	background: linear-gradient(var(--wp--preset--color--fond-2) 50%, var(--wp--preset--color--fond) 50%);
+	transition: transform .55s cubic-bezier(.6, 0, .2, 1);
 }
 .g-acces a::after {
 	content: ""; width: 48px; height: 48px; flex: none;
 	background: currentColor;
 	-webkit-mask: var(--g-fleche) center / contain no-repeat;
 	mask: var(--g-fleche) center / contain no-repeat;
-	transition: transform .3s ease;
+	transition: transform .4s cubic-bezier(.2, .7, .2, 1), background-color .35s ease;
 }
-.g-acces a:hover, .g-acces a:focus-visible { color: var(--wp--preset--color--fond); }
-.g-acces a:hover::after, .g-acces a:focus-visible::after { transform: scale(1.25); }
-.g-acces a:hover::before { transform: translateX(-40px); }
+.g-acces a:is(:hover, :focus-visible) { color: var(--wp--preset--color--encre); border-color: var(--wp--preset--color--encre); background-color: var(--wp--preset--color--fond); transition: color .35s ease .1s, border-color .35s ease, background-color 0s linear .55s; }
+.g-acces a:is(:hover, :focus-visible)::before { transform: translateY(-100%); }
+.g-acces a:is(:hover, :focus-visible)::after { background: var(--wp--preset--color--accent); transform: scale(1.25); }
+.g-acces a:active { color: var(--wp--preset--color--accent); border-color: var(--wp--preset--color--accent); }
 .g-acces a:focus-visible { outline-color: var(--wp--preset--color--fond); }
 
 /* Animation d'entrée : lignes du titre qui montent, mot GAYREL qui apparaît, accès qui glissent */
@@ -344,34 +350,43 @@ body { overflow-x: clip; }
    ========================================================= */
 .g-services {
 	position: relative;
-	display: grid !important; grid-template-columns: 1fr 1fr; gap: 24px;
+	display: grid !important; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; /* carte Particuliers décalée, pas raccourcie */
 	margin: clamp(48px, 5.5vw, 106px) var(--g-marge) !important;
 	padding: 0 !important; max-width: none !important;
 }
 .g-services > * { margin: 0 !important; }
 .g-services__titre { position: absolute; left: calc(50% + 12px); top: clamp(40px, 7vw, 135px); color: var(--wp--preset--color--fond-2); }
 .g-service {
+	--g-p: clamp(24px, 3.4vw, 66px);
 	position: relative; overflow: hidden;
 	min-height: clamp(760px, 73vw, 1400px);
 	border-radius: var(--g-rayon);
 	color: var(--wp--preset--color--fond);
-	padding: 64px clamp(24px, 3.4vw, 66px) !important;
+	padding: 64px var(--g-p) 0 !important;
 	display: flex; flex-direction: column;
 }
 .g-service--pro { background: var(--wp--preset--color--nuit); }
 .g-service--part { background: var(--wp--preset--color--accent); margin-top: clamp(160px, 26vw, 504px) !important; }
-.g-service > * { position: relative; z-index: 2; max-width: 609px; }
-.g-service h3 { font-size: 2rem; line-height: .95; font-weight: 500; color: inherit; margin: 0 0 24px; max-width: 430px; }
-.g-service p { margin: 0 0 24px; }
-.g-service .g-geant {
-	position: absolute; left: -5px; bottom: 37%; z-index: 1; max-width: none;
-	color: var(--wp--preset--color--ciel);
-	font-size: clamp(5rem, 10.4vw, 12.5rem);
-	white-space: normal; width: 110%;
+.g-service > * { position: relative; max-width: 609px; margin: 0 !important; }
+.g-service h3 { font-size: 2rem; line-height: .95; font-weight: 500; color: inherit; margin: 0 0 24px !important; max-width: 430px; }
+.g-service p, .g-service > p { margin: 0 0 24px !important; }
+/* En flux : le grand mot se cale en bas de la carte, la photo détourée le recouvre à moitié (jamais sur le texte) */
+.g-service .g-geant, .g-service > .wp-block-html {
+	margin-top: auto !important;
 }
+.g-service .g-geant {
+	position: relative; z-index: 1; max-width: none;
+	margin: auto calc(-1 * var(--g-p)) -0.62em calc(-1 * var(--g-p) - 0.03em) !important;
+	color: var(--wp--preset--color--ciel);
+	font-size: clamp(4.5rem, 10.4vw, 12.5rem);
+	white-space: nowrap;
+}
+.g-service > .wp-block-html .g-geant { margin-top: 0 !important; }
+.g-service > .wp-block-html { max-width: none; }
 .g-service .wp-block-image {
-	position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; max-width: none;
-	height: 52%; margin: 0;
+	position: relative; z-index: 2; max-width: none;
+	margin: 0 calc(-1 * var(--g-p)) !important;
+	height: clamp(280px, 31vw, 600px);
 }
 /* photos détourées (ciel transparent) : le grand mot reste visible derrière le bâtiment */
 .g-service .wp-block-image img { width: 100%; height: 100%; object-fit: cover; object-position: center bottom; display: block; }
@@ -385,11 +400,9 @@ body { overflow-x: clip; }
 @media (max-width: 900px) {
 	.g-services { grid-template-columns: 1fr; }
 	.g-services__titre { position: static; padding: 0 8px; font-size: clamp(3.5rem, 15vw, 6rem); }
-	/* mobile : texte, mot décoratif puis photo, les uns sous les autres (plus de superposition) */
-	.g-service { min-height: 0; padding: 40px 24px 0 !important; }
+	.g-service { min-height: 0; padding-top: 40px !important; }
 	.g-service--part { margin-top: 0 !important; }
-	.g-service .g-geant { position: relative; left: auto; bottom: auto; width: auto; margin: 16px 0 -0.42em !important; font-size: clamp(3.5rem, 17vw, 7rem); }
-	.g-service .wp-block-image { position: relative; height: 280px; margin: 0 -24px !important; max-width: none; }
+	.g-service .g-geant { font-size: clamp(3.5rem, 17vw, 7rem); margin-top: 24px !important; }
 }
 
 /* =========================================================
@@ -428,7 +441,7 @@ body { overflow-x: clip; }
 .g-carte-projet .wp-block-post-title a::after {
 	content: ""; width: 24px; height: 24px; flex: none; background: var(--wp--preset--color--accent);
 	-webkit-mask: var(--g-fleche) center / contain no-repeat; mask: var(--g-fleche) center / contain no-repeat;
-	transition: transform .3s ease;
+	transition: transform .4s cubic-bezier(.2, .7, .2, 1);
 }
 /* Toute la carte est cliquable par le lien du titre (une seule cible pour le clavier) */
 .g-carte-projet .wp-block-post-title a::before { content: ""; position: absolute; inset: 0; z-index: 1; }
@@ -466,12 +479,13 @@ body { overflow-x: clip; }
 	position: relative;
 }
 .g-duo > * { margin: 0 !important; min-width: 0; }
-.g-duo__texte { padding: 64px clamp(20px, 3vw, 24px) !important; position: relative; overflow: hidden; }
+.g-duo__texte { padding: 64px clamp(20px, 3vw, 24px) !important; position: relative; overflow-x: clip; overflow-y: visible; } /* les jambages des grands mots (G, Q) peuvent passer le trait */
 .g-duo__texte > *:not(.g-geant) { max-width: 609px; position: relative; z-index: 1; }
 .g-duo__texte h2 { font-size: 2rem; line-height: .9; margin: 0 0 24px; max-width: 475px !important; }
 .g-duo__texte p { margin: 0 0 24px; color: #000; }
-.g-duo__texte .g-geant { position: absolute; left: -15px; bottom: -.12em; color: var(--wp--preset--color--fond-2); font-size: clamp(5rem, 13vw, 15.625rem); line-height: 1.2; }
-.g-duo--entreprise { padding-top: 24px !important; padding-bottom: 24px !important; }
+.g-duo__texte .g-geant { position: absolute; left: 0; bottom: 0; color: var(--wp--preset--color--fond-2); font-size: clamp(5rem, 13vw, 15.625rem); line-height: .73; /* hauteur des capitales de Manrope : le pied des lettres touche le trait */ }
+.g-duo--entreprise { padding-top: 24px !important; padding-bottom: 0 !important; }
+.g-duo--entreprise .g-duo__visuel { margin-bottom: 24px !important; }
 .g-duo--entreprise .g-duo__texte { padding: 64px 0 clamp(220px, 20vw, 342px) clamp(0px, 3vw, 64px) !important; }
 .g-duo__visuel { position: relative; border-radius: var(--g-rayon); overflow: hidden; min-height: 560px; }
 .g-duo__visuel .wp-block-image { position: absolute; inset: 0; margin: 0; }
@@ -516,7 +530,7 @@ body { overflow-x: clip; }
 	-webkit-mask: url("../icones/chevron.svg") center / 13px auto no-repeat; mask: url("../icones/chevron.svg") center / 13px auto no-repeat;
 	transform: rotate(-135deg); transition: transform .25s ease;
 }
-.g-faq__liste details[open] summary::after { transform: rotate(45deg); }
+.g-faq__liste details[open]:not(.g-ferme) summary::after { transform: rotate(45deg); }
 .g-faq__liste .wp-block-details p { font-size: 1.125rem; margin: 0 0 16px; max-width: 600px; }
 
 /* =========================================================
@@ -579,6 +593,7 @@ body { overflow-x: clip; }
 .g-pied__bas p { margin: 0; }
 .g-pied__coordonnees { font-style: normal; }
 .g-pied__coordonnees a { color: inherit; display: inline-flex; align-items: center; min-height: 32px; }
+.g-pied__signature { margin-left: auto !important; }
 .g-pied__signature a { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; color: inherit; text-decoration: none; }
 .g-pied__signature img { height: 16px; width: auto; }
 @media (max-width: 900px) {
@@ -639,7 +654,7 @@ body { overflow-x: clip; }
 }
 
 /* Cartes en grille (valeurs, produits, labels) */
-.g-cartes { display: grid !important; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+.g-cartes { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 16px; }
 .g-cartes > * { margin: 0 !important; }
 .g-carte {
 	border-radius: var(--g-rayon); padding: 32px 24px !important;
@@ -705,3 +720,19 @@ body { overflow-x: clip; }
 
 /* Classe utilitaire : texte réservé aux lecteurs d'écran */
 .g-lecteur { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+/* =========================================================
+   Éditeur de blocs : même rendu que le site
+   L'éditeur donne « position: relative » à chaque bloc (règle plus forte que celles du thème) et enveloppe
+   les blocs HTML dans un <div> : on rétablit ici les calques superposés des sections.
+   ========================================================= */
+.editor-styles-wrapper :is(.g-hero__ciel, .g-hero__batiment, .g-hero__texte, .g-hero__acces, .g-services__titre, .g-duo__visuel > .wp-block-image) { position: absolute !important; }
+.editor-styles-wrapper :is(.g-hero, .g-projets, .g-duo__texte, .g-page-entete) > .wp-block-html { position: static !important; margin: 0 !important; }
+.editor-styles-wrapper .g-services > .wp-block-html { position: absolute !important; inset: 0; margin: 0 !important; pointer-events: none; }
+.editor-styles-wrapper .g-projets > .wp-block-html { grid-column: 1 / -1; grid-row: 1; position: sticky !important; top: 0; align-self: start; }
+.editor-styles-wrapper .g-hero > .wp-block-html .g-hero__marque { z-index: 0; }
+.editor-styles-wrapper .g-hero__batiment { z-index: 1; }
+.editor-styles-wrapper :is(.g-hero__texte, .g-hero__acces) { z-index: 2; }
+/* Éléments techniques du modèle, sans rendu dans l'éditeur (le fil d'Ariane est calculé sur le site) */
+.editor-styles-wrapper .g-page-entete > .wp-block-shortcode,
+.editor-styles-wrapper .wp-block-post-excerpt__more-text { display: none !important; }

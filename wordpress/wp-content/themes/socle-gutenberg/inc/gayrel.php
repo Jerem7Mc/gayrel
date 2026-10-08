@@ -36,3 +36,14 @@ add_filter( 'get_the_archive_title', function ( $titre ) {
 	return $titre;
 } );
 
+
+// FAQ : animation et réponse unique ouverte (blocs Détails des pages)
+add_action( 'wp_enqueue_scripts', function () {
+	if ( is_singular() && has_block( 'core/details', get_queried_object_id() ) ) {
+		$f = get_stylesheet_directory() . '/assets/js/faq.js';
+		wp_enqueue_script( 'gayrel-faq', get_stylesheet_directory_uri() . '/assets/js/faq.js', [], filemtime( $f ), [ 'strategy' => 'defer', 'in_footer' => true ] );
+	}
+} );
+
+// Éditeur : les pages s'ouvrent avec leur modèle (en-tête, pied, mise en page réelle), comme sur le site
+add_action( 'init', fn() => add_post_type_support( 'page', 'editor', [ 'default-mode' => 'template-locked' ] ), 20 );

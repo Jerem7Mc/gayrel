@@ -6,7 +6,7 @@
  * Block Types: core/template-part/footer
  * Inserter: no
  *
- * Bandeau bleu de la maquette : logo blanc, menu du pied, liens légaux, coordonnées, signature de l'agence.
+ * Bandeau bleu de la maquette : logo blanc, menu du pied, liens légaux à gauche, signature de l'agence à droite.
  * Les références des menus sont posées à l'installation (integration/construire.php).
  */
 $menu_pied   = (int) get_option( 'gayrel_menu_pied' );
@@ -26,10 +26,6 @@ $theme       = get_stylesheet_directory_uri();
 
 <!-- wp:group {"className":"g-pied__bas","layout":{"type":"default"}} -->
 <div class="wp-block-group g-pied__bas"><!-- wp:navigation {"ref":<?php echo $menu_legal; ?>,"overlayMenu":"never","layout":{"type":"flex","flexWrap":"wrap"},"ariaLabel":"Informations légales"} /-->
-
-<!-- wp:html -->
-<?php echo do_shortcode( '[socle_coordonnees]' ); // dans une composition, le bloc Code court n'est pas interprété ?>
-<!-- /wp:html -->
 
 <!-- wp:paragraph {"className":"g-pied__signature"} -->
 <p class="g-pied__signature"><a href="https://www.agoravita.com/" rel="noopener">by <img src="<?php echo esc_url( $theme . '/assets/icones/agoravita.svg' ); ?>" alt="Agoravita" width="84" height="16"></a></p>

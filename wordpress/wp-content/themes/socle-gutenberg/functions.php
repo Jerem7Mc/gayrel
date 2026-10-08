@@ -18,6 +18,9 @@ add_action( 'after_setup_theme', function () {
 	if ( file_exists( get_stylesheet_directory() . '/assets/css/ambiance.css' ) ) {
 		add_editor_style( 'assets/css/ambiance.css' ); // style de départ visible dans l'éditeur
 	}
+	if ( file_exists( get_stylesheet_directory() . '/assets/css/projet.css' ) ) {
+		add_editor_style( 'assets/css/projet.css' ); // sections du projet : même rendu dans l'éditeur que sur le site
+	}
 } );
 
 add_action( 'wp_enqueue_scripts', function () {

@@ -290,7 +290,7 @@ $hero = g_groupe( 'g-hero alignfull',
 	. g_geant( 'Gayrel', 'g-hero__marque' )
 	. g_image( $m['batiment'], 'g-hero__batiment', 'full', '' )
 	. g_groupe( 'g-hero__texte',
-		g_titre( '<span class="g-ligne"><span>Façade,</span></span> <span class="g-ligne"><span>Menuiserie,</span></span> <span class="g-ligne"><span>aluminium.</span></span>', 1 )
+		g_titre( '<span class="g-ligne"><span>Façade, </span></span><span class="g-ligne"><span>Menuiserie, </span></span><span class="g-ligne"><span>aluminium.</span></span>', 1 )
 		. g_p( 'Concepteur, fabricant et installateur de menuiseries et façades en aluminium depuis 1994', 'g-hero__accroche' ) )
 	. g_groupe( 'g-hero__acces',
 		g_p( '<a href="/habitat/">Solutions pour l’Habitat<br>Particuliers</a>', 'g-acces g-acces--habitat' )
