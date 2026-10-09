@@ -40,3 +40,8 @@ Retours de l'utilisateur traités, et reportés dans la méthode du socle (`socl
   teintée (`maquette/carte/plan-gayrel.jpg`, outil `socle-wp/outils/carte-statique.php`).
 - Arbitrage : adresse et téléphone retirés du pied de page à la demande de l'utilisateur → Opquast 105 signalé par la
   vérification, accepté.
+- Cookies et confidentialité (9 octobre, depuis le socle) : panneau « Gestion des cookies » qui présente les cookies
+  nécessaires puis Google Maps (soumis à accord) ; politique de confidentialité générée par `[socle_donnees]`
+  (formulaire de contact et de demande de devis, cookies, services) et droits détaillés (portabilité, retrait du
+  consentement, réponse sous un mois). Débordement des grands mots à 320 px corrigé ; contraste du survol du menu
+  vérifié (5,14:1 au repos, 11,81:1 au survol). Vérification : tout conforme sauf Opquast 105 (arbitrage ci-dessus).
