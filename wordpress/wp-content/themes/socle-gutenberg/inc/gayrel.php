@@ -88,7 +88,7 @@ add_filter( 'render_block_core/group', function ( $html, $bloc ) {
 		}
 		if ( '' !== $mot ) {
 			$pos  = strrpos( $html, '</div>' );
-			$html = substr( $html, 0, $pos ) . '<p class="g-geant" aria-hidden="true">' . esc_html( $mot ) . '</p>' . substr( $html, $pos );
+			$html = substr( $html, 0, $pos ) . '<p class="g-geant" aria-hidden="true" style="--g-lettres:' . max( 1, mb_strlen( $mot ) ) . '">' . esc_html( $mot ) . '</p>' . substr( $html, $pos );
 		}
 	}
 	return $html;

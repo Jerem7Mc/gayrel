@@ -235,6 +235,18 @@ body { overflow-x: clip; }
 	/* pictos seuls : le texte reste le nom accessible du lien */
 	.g-entete__tel a { width: 46px; padding: 0; gap: 0; justify-content: center; }
 	.g-contact .wp-block-button__link { min-height: 54px; height: 54px; width: 54px; padding: 0; gap: 0; justify-content: center; }
+	/* les trois pictos forment un seul bloc (fonds conservés), arrondis aux extrémités seulement */
+	.g-entete { gap: 0; }
+	.g-entete .wp-block-site-logo { margin-right: 8px !important; flex: 1 1 auto; max-width: max-content; }
+	.g-entete__outils { margin-left: auto !important; border-radius: var(--g-rayon) 0 0 var(--g-rayon); }
+	.g-entete .g-contact .wp-block-button__link { border-radius: 0; }
+	.g-entete .g-nav { border-radius: 0 var(--g-rayon) var(--g-rayon) 0; }
+	/* picto enveloppe pour la page Contact */
+	.g-contact .wp-block-button__link::after { width: 26px; height: 20px; -webkit-mask-image: url("../icones/mail.svg"); mask-image: url("../icones/mail.svg"); }
+	/* bouton du menu centré dans sa pastille, traits plus longs */
+	.g-entete .wp-block-navigation__responsive-container-open { justify-content: center; align-items: center; padding: 0; }
+	.g-entete .wp-block-navigation__responsive-container-open svg { display: none; }
+	.g-entete .wp-block-navigation__responsive-container-open::before { content: ""; width: 24px; height: 8px; border-block: 1.5px solid currentColor; }
 	.g-entete .g-texte-picto { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 	.g-entete .g-nav { padding: 4px; }
 }
@@ -584,6 +596,8 @@ body { overflow-x: clip; }
 	transition: opacity .3s ease, transform .3s ease;
 	pointer-events: none;
 }
+/* actualités : la pastille annonce un article */
+:is(.blog, .archive.category, .archive.tag, .search) .g-carte-projet .wp-block-post-featured-image::after { content: "Lire l’article"; }
 .g-carte-projet:hover .wp-block-post-featured-image::after { opacity: 1; transform: translate(-50%, -50%) rotate(-15deg) scale(1); }
 .g-projets .wp-block-buttons { margin-top: calc(-1 * var(--g-bouton-h)) !important; min-height: var(--g-bouton-h); align-items: flex-end; }
 @media (max-width: 900px) {
@@ -633,10 +647,10 @@ body { overflow-x: clip; }
 .g-duo--partenaire .g-duo__texte > * { width: 100%; }
 @media (max-width: 900px) {
 	.g-duo { grid-template-columns: 1fr; }
-	.g-duo--entreprise .g-duo__texte { padding: 40px 4px 140px !important; }
+	.g-duo--entreprise .g-duo__texte { padding: 40px 0 140px !important; }
 	.g-duo__visuel { min-height: 420px; }
 	.g-duo--partenaire .g-duo__logo { padding: 48px 0 16px; }
-	.g-duo__texte { padding: 40px 4px !important; }
+	.g-duo__texte { padding: 40px 0 !important; } /* mobile : textes alignés sur le bord des cadres (12 px), comme les titres de section */
 	.g-faq .g-duo__texte { padding-bottom: clamp(96px, 26vw, 140px) !important; }
 }
 
@@ -779,7 +793,12 @@ body { overflow-x: clip; }
 .g-page-entete__intro { font-size: 1.25rem; max-width: 760px !important; margin: 0; }
 .g-page-entete .g-geant { position: absolute; right: -.04em; bottom: -.14em; color: var(--wp--preset--color--fond); z-index: 0; max-width: none; }
 .g-page-entete--image .g-geant { z-index: 1; } /* net, au-dessus du voile : la couleur du fond de page « découpe » la photo */
-@media (max-width: 900px) { .g-page-entete:has(> .g-geant) { padding-bottom: clamp(64px, 16vw, 96px) !important; } }
+@media (max-width: 900px) {
+	.g-page-entete:has(> .g-geant) { padding-bottom: clamp(64px, 16vw, 96px) !important; }
+	/* le grand mot tient entier dans la largeur (jamais rogné) : taille selon son nombre de lettres (inc/gayrel.php) */
+	.g-page-entete { container-type: inline-size; }
+	.g-page-entete .g-geant { font-size: min(4.5rem, calc(100cqi / (var(--g-lettres, 8) * .72))); right: 0; white-space: nowrap; }
+}
 .g-page-entete--image { background: #1e2026; color: var(--wp--preset--color--fond); height: clamp(460px, 62vh, 640px); min-height: 0; padding-bottom: clamp(64px, 7vw, 120px) !important; display: flex; flex-direction: column; justify-content: flex-end; }
 .single-post .g-page-entete--image h1, .single-post .g-page-entete--image .wp-block-post-title { font-size: clamp(2rem, 4.2vw, 4.5rem); }
 @media (max-width: 900px) { .g-page-entete--image { height: 540px; } }
@@ -812,6 +831,7 @@ body { overflow-x: clip; }
 	.g-bloc { grid-template-columns: 1fr; }
 	.g-bloc--inverse > .wp-block-image { order: 0; }
 	.g-bloc .wp-block-image { min-height: 280px; }
+	.g-bloc__texte { padding-inline: 0 !important; }
 }
 
 /* Cartes en grille (valeurs, produits, labels) */
