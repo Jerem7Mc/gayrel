@@ -45,6 +45,12 @@ add_action( 'wp_enqueue_scripts', function () {
 	}
 } );
 
+// Menu mobile : fermeture animée (assets/js/menu.js)
+add_action( 'wp_enqueue_scripts', function () {
+	$f = get_stylesheet_directory() . '/assets/js/menu.js';
+	wp_enqueue_script( 'gayrel-menu', get_stylesheet_directory_uri() . '/assets/js/menu.js', [], filemtime( $f ), [ 'strategy' => 'defer', 'in_footer' => true ] );
+} );
+
 // Éditeur : les pages s'ouvrent avec leur modèle (en-tête, pied, mise en page réelle), comme sur le site
 add_action( 'init', fn() => add_post_type_support( 'page', 'editor', [ 'default-mode' => 'template-locked' ] ), 20 );
 

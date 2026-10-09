@@ -278,6 +278,11 @@ body { overflow-x: clip; }
 	.g-entete .is-menu-open .wp-block-navigation-item:nth-child(9) { animation-delay: .32s; }
 }
 @keyframes g-entree-menu { from { opacity: 0; transform: translateY(16px); } }
+/* fermeture (assets/js/menu.js) : les entrées redescendent puis le panneau remonte en s'effaçant */
+@keyframes g-sortie-menu { to { opacity: 0; transform: translateY(-24px); } }
+@keyframes g-sortie-entree { to { opacity: 0; transform: translateY(12px); } }
+.g-entete .wp-block-navigation__responsive-container.is-menu-open.g-menu-sortie { animation: g-sortie-menu .38s cubic-bezier(.4, 0, .6, 1) forwards; }
+.g-entete .g-menu-sortie .wp-block-navigation-item { animation: g-sortie-entree .25s ease forwards !important; }
 /* Panneau : téléphone et LinkedIn avec leur picto, séparés des pages par un trait */
 .g-entete .is-menu-open .g-menu-tel { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--wp--preset--color--trait); }
 .g-entete .is-menu-open :is(.g-menu-tel, .g-menu-linkedin) .wp-block-navigation-item__content { gap: 12px; font-size: 1.25rem; }
@@ -586,7 +591,7 @@ body { overflow-x: clip; }
 /* Pastille « Voir le projet » au survol (composant Card Réalisation) */
 .g-carte-projet .wp-block-post-featured-image { position: relative; }
 .g-carte-projet .wp-block-post-featured-image::after {
-	content: "Voir le projet";
+	content: "Voir le\A projet"; white-space: pre-line; /* deux lignes, comme la maquette */
 	position: absolute; left: 50%; top: 50%;
 	width: 100px; height: 100px; border-radius: 50%;
 	display: grid; place-items: center; text-align: center; padding: 10px;
@@ -597,7 +602,7 @@ body { overflow-x: clip; }
 	pointer-events: none;
 }
 /* actualités : la pastille annonce un article */
-:is(.blog, .archive.category, .archive.tag, .search) .g-carte-projet .wp-block-post-featured-image::after { content: "Lire l’article"; }
+:is(.blog, .archive.category, .archive.tag, .search) .g-carte-projet .wp-block-post-featured-image::after { content: "Lire\A l’article"; }
 .g-carte-projet:hover .wp-block-post-featured-image::after { opacity: 1; transform: translate(-50%, -50%) rotate(-15deg) scale(1); }
 .g-projets .wp-block-buttons { margin-top: calc(-1 * var(--g-bouton-h)) !important; min-height: var(--g-bouton-h); align-items: flex-end; }
 @media (max-width: 900px) {
@@ -985,4 +990,12 @@ body { overflow-x: clip; }
 	.g-carte-projet:hover .wp-block-post-featured-image img { transform: none; }
 	/* pastille « Voir le projet » toujours affichée */
 	.g-carte-projet .wp-block-post-featured-image::after { opacity: 1; transform: translate(-50%, -50%) rotate(-15deg) scale(1); }
+}
+/* mobile : la pastille quitte le milieu de la photo pour son coin bas droit, plus petite */
+@media (max-width: 899px) {
+	.g-carte-projet .wp-block-post-featured-image::after {
+		left: auto; top: auto; right: 12px; bottom: 12px;
+		width: 84px; height: 84px; padding: 8px; font-size: 1rem; line-height: 1.05;
+		transform: rotate(-15deg); box-shadow: 0 4px 12px rgba(7, 17, 94, .25);
+	}
 }
