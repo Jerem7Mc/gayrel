@@ -18,3 +18,25 @@
 - Extension **socle-realisations** créée et versée au socle (option `nouveau-projet.sh --realisations`).
 - FAQ en blocs Détails natifs : socle-seo produit désormais le JSON-LD FAQPage à partir de ces blocs.
 - Agence : Agoravita (signature « by agoravita » du pied de page, maquette).
+
+## 8-9 octobre 2026 — recettes successives (fidélité à la maquette)
+
+Retours de l'utilisateur traités, et reportés dans la méthode du socle (`socle-wp/docs/maquette-figma.md`,
+« Points de contrôle ») :
+- En-tête : pastilles à la hauteur du logo (62 px), états Hover/Pressed des composants, zone de droite complète.
+- Boutons : variantes de fond, flèche poussée par une flèche identique (0,9 s), couleurs de flèche lues dans Figma.
+- Accueil : animation d'entrée en trois temps (bâtiment seul, GAYREL qui monte de derrière, puis en-tête et bas
+  ensemble) ; cartes d'accès au fond rayé exact (vecteurs Figma) ; GAYREL qui glisse sous le bâtiment au défilement.
+- Réalisations (accueil) : titres collés puis **poussés hors du cadre** (rien ne s'efface), pause de la dernière carte,
+  le bouton la pousse, marge droite de la maquette.
+- Pages intérieures : en-tête photo de hauteur fixe avec grand mot « découpé » dans la couleur du fond, 404 dans la DA,
+  plan du site ordonné.
+- Accessibilité (versée au socle) : repères `role`, liens d'évitement, bandeau cookies premier au clavier et rouvrable,
+  focus visibles, fil d'Ariane sans lien sur la page courante, liens de texte animés, liens externes en nouvel onglet.
+- Mobile : logo à gauche, pictos téléphone / contact (enveloppe) / menu regroupés à droite, menu animé à l'ouverture
+  et à la fermeture (`assets/js/menu.js`) avec Devis, téléphone et LinkedIn, aucune animation au toucher, pastilles
+  « Voir le projet » / « Lire l'article » dans le coin des photos.
+- Plan d'accès (Contact, Showroom) : carte Google Maps conservée (au clic), façade sur image OpenStreetMap locale
+  teintée (`maquette/carte/plan-gayrel.jpg`, outil `socle-wp/outils/carte-statique.php`).
+- Arbitrage : adresse et téléphone retirés du pied de page à la demande de l'utilisateur → Opquast 105 signalé par la
+  vérification, accepté.
