@@ -607,8 +607,9 @@ body { overflow-x: clip; }
 .g-carte-projet:hover .wp-block-post-featured-image::after { opacity: 1; transform: translate(-50%, -50%) rotate(-15deg) scale(1); }
 .g-projets .wp-block-buttons { margin-top: calc(-1 * var(--g-bouton-h)) !important; min-height: var(--g-bouton-h); align-items: flex-end; }
 @media (max-width: 900px) {
-	.g-projets { grid-template-columns: 1fr; padding: 24px 16px 48px !important; }
-	.g-projets__geant { position: static; font-size: clamp(3.25rem, 14vw, 6rem); padding: 0; }
+	.g-projets { grid-template-columns: minmax(0, 1fr); padding: 24px 16px 48px !important; container-type: inline-size; }
+	/* ajusté à la largeur : la plus longue ligne (« DES PROJETS ») mesure 6,34 em en Manrope Medium */
+	.g-projets__geant { position: static; font-size: min(clamp(3.25rem, 14vw, 6rem), calc(100cqi / 6.5)); padding: 0; }
 	.g-projets__liste { grid-column: 1; grid-row: 2; padding-top: 32px !important; }
 	.g-projets .wp-block-post, .g-projets h2 { position: static; }
 	.g-projets .wp-block-post { margin-bottom: 0 !important; }
