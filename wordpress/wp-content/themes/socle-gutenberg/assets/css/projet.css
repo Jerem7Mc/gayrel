@@ -119,6 +119,8 @@ body { overflow-x: clip; }
 	background: none; border: 0;
 	z-index: 30;
 }
+/* l'en-tête flotte sur le visuel : pas d'écart de blocs (20 px) avant le contenu, le cadre reste à 24 px du haut */
+.wp-site-blocks > header.wp-block-template-part + * { margin-block-start: 0; }
 .admin-bar .wp-site-blocks > header.wp-block-template-part { top: 32px; }
 @media (max-width: 782px) { .admin-bar .wp-site-blocks > header.wp-block-template-part { top: 46px; } }
 @media (max-width: 600px) { .admin-bar .wp-site-blocks > header.wp-block-template-part { top: 46px; } } /* barre d'administration dans le flux en mobile */
@@ -292,14 +294,21 @@ body { overflow-x: clip; }
 	border: 1px solid transparent;
 	border-radius: var(--g-rayon);
 	background-color: var(--wp--preset--color--accent);
-	/* fines diagonales du composant « CTA - Accueil » */
-	background-image: repeating-linear-gradient(105deg, transparent 0 140px, rgba(243, 244, 246, .18) 140px 141px);
+	/* fond rayé du composant « CTA - Accueil » : traits de 1 px inclinés à 15° tous les 117 px, bleu roi sur bleu */
+	background-image: var(--g-rayures);
+	--g-rayures: repeating-linear-gradient(105deg, transparent 0 83.15px, var(--wp--preset--color--roi) 83.15px 84.15px, transparent 84.15px 117px);
 	color: var(--wp--preset--color--fond);
 	transition: color .35s ease .1s, border-color .35s ease;
 	font-size: clamp(1.375rem, 1.7vw, 2rem); font-weight: 500; line-height: 1;
 	text-decoration: none;
 }
-.g-acces--batiment a { background-color: var(--wp--preset--color--nuit); }
+.g-acces--batiment a {
+	background-color: var(--wp--preset--color--nuit);
+	/* variante Bâtiment : traits #1A267A inclinés à 26,38° tous les 28,3 px */
+	--g-rayures: repeating-linear-gradient(116.38deg, transparent 0 22.76px, #1a267a 22.76px 23.76px, transparent 23.76px 28.31px);
+}
+/* coupures de la maquette : « Solutions pour » puis la cible, sur 334-350 px pour un texte de 32 px */
+.g-acces a > span { max-width: 10.95em; }
 /* Survol (états Hover / Pressed de Figma) : un rideau gris puis blanc monte depuis le bas */
 .g-acces a::before {
 	content: ""; position: absolute; left: -10px; right: -10px; top: 100%; height: 200%; z-index: -1; /* gris puis blanc, chacun de la hauteur de la carte */
@@ -322,26 +331,29 @@ body { overflow-x: clip; }
 .g-acces a:active { color: var(--wp--preset--color--accent); border-color: var(--wp--preset--color--accent); }
 .g-acces a:focus-visible { outline-color: var(--wp--preset--color--fond); }
 
-/* Animation d'entrée (variantes « Animation - Entrée » 1 → 4 de la maquette) : la photo plein cadre se rétracte dans
-   son cadre arrondi, le mot GAYREL apparaît derrière le bâtiment, puis l'en-tête, le titre et les accès. */
+/* Animation d'entrée (variantes « Animation - Entrée » 1 → 4 de la maquette), en trois temps :
+   1. le bâtiment seul, photo plein cadre ;
+   2. la photo se rétracte dans son cadre arrondi et le mot GAYREL monte de derrière le bâtiment ;
+   3. ensemble : l'en-tête descend du haut, le titre, l'accroche et les deux accès montent du bas. */
 @media (prefers-reduced-motion: no-preference) {
-	.g-hero { animation: g-cadre 1s .35s cubic-bezier(.65, 0, .25, 1) both; }
-	.g-hero__ciel img { animation: g-zoom 2.6s cubic-bezier(.2, .7, .2, 1) both; }
-	.g-hero__marque { animation: g-marque 1.2s 1s cubic-bezier(.2, .7, .2, 1) both; }
-	.home .wp-site-blocks > header.wp-block-template-part { animation: g-apparait .7s 1.6s ease both; }
-	.g-hero h1 .g-ligne > span { animation: g-monte .9s 1.7s cubic-bezier(.2, .7, .2, 1) both; }
-	.g-hero h1 .g-ligne:nth-child(2) > span { animation-delay: 1.82s; }
-	.g-hero h1 .g-ligne:nth-child(3) > span { animation-delay: 1.94s; }
-	.g-hero__accroche { animation: g-apparait .8s 2.2s ease both; }
-	.g-hero__acces > * { animation: g-glisse .8s 2.1s cubic-bezier(.2, .7, .2, 1) both; }
-	.g-hero__acces > :nth-child(2) { animation-delay: 2.22s; }
+	.g-hero { animation: g-cadre 1s .6s cubic-bezier(.65, 0, .25, 1) both; }
+	.g-hero__marque { animation: g-marque 1.2s .75s cubic-bezier(.3, 0, .2, 1) both; }
+	.home .wp-site-blocks > header.wp-block-template-part { animation: g-descend .9s 2s cubic-bezier(.2, .7, .2, 1) both; }
+	.g-hero h1 .g-ligne > span { animation: g-monte .9s 2s cubic-bezier(.2, .7, .2, 1) both; }
+	.g-hero__accroche { animation: g-glisse .9s 2s cubic-bezier(.2, .7, .2, 1) both; }
+	.g-hero__acces > * { animation: g-surgit .9s 2s cubic-bezier(.2, .7, .2, 1) both; }
 }
-/* marge du cadre = 1,25 % de chaque côté : un agrandissement de 1 / 0,975 rend la photo plein cadre */
-@keyframes g-cadre { from { transform: translateY(calc(var(--g-marge) * -.5)) scale(1.0256); border-radius: 0; } }
+/* marge du cadre = 1,25 % de chaque côté : un agrandissement de 1 / 0,975 en largeur rend la photo plein cadre ;
+   accueil.js calcule les rapports exacts pour l'écran (--g-sx, --g-sy = (taille + 2 marges) / taille) */
+@keyframes g-cadre { from { transform: scale(var(--g-sx, 1.0256), var(--g-sy, 1.0504)); border-radius: 0; } }
 @keyframes g-monte { from { transform: translateY(105%); } }
 @keyframes g-apparait { from { opacity: 0; } }
-@keyframes g-marque { from { opacity: 0; transform: translate(-50%, 18%); } }
+/* maquette : le mot part ~240 px plus bas (sur 952), caché derrière le bâtiment, et monte en apparaissant */
+@keyframes g-marque { from { opacity: 0; transform: translate(-50%, 75%); } 30% { opacity: 1; } }
+@keyframes g-descend { from { opacity: 0; transform: translateY(-100%); } }
 @keyframes g-glisse { from { opacity: 0; transform: translateY(40px); } }
+/* les accès entrent par le bord bas du cadre (le visuel masque ce qui dépasse) */
+@keyframes g-surgit { from { opacity: 0; transform: translateY(calc(100% + 64px)); } }
 @keyframes g-zoom { from { transform: scale(1.08); } }
 
 @media (max-width: 1100px) {
@@ -876,9 +888,11 @@ body { overflow-x: clip; }
 }
 
 /* Les cartes d'accès du visuel sont des liens-boîtes : pas de soulignement animé des liens de texte (socle-base) */
-.g-acces a, .g-acces a:is(:hover, :focus-visible) {
-	background-image: repeating-linear-gradient(105deg, transparent 0 140px, rgba(243, 244, 246, .18) 140px 141px);
+/* (sélecteur renforcé : celui du socle vaut 0,1,3 et barrait le texte d'un trait au milieu) */
+.g-hero .g-acces a, .g-hero .g-acces a:is(:hover, :focus-visible) {
+	background-image: var(--g-rayures);
 	background-size: auto; background-position: 0 0; background-repeat: repeat;
+	width: auto; /* le socle met les liens de texte en fit-content : la carte Habitat rétrécissait */
 	text-decoration: none;
 }
 
