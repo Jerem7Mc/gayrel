@@ -643,6 +643,8 @@ foreach ( $entetes as $pid => [ $mot, $img ] ) {
 	}
 }
 update_option( 'gayrel_image_realisations', $photo( 'safran.jpg' ) );
+// Livraison client : agence affichée dans l'accueil et le guide du client (coordonnées à compléter dans Réglages → Livraison client)
+update_option( 'socle_agence', array_merge( (array) get_option( 'socle_agence', [] ), [ 'nom' => 'Agoravita' ] ) );
 update_option( 'gayrel_image_404', $photo( 'aerocampus-blagna-zoom.jpg' ) );
 // Fond du plan d'accès ([socle_plan]) : carte OpenStreetMap locale teintée, générée par
 // socle-wp/outils/carte-statique.php --lat=43.901481 --lon=1.876989 --teinte=#d3d5e4 --force=0.5

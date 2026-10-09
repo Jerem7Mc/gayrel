@@ -16,7 +16,8 @@
 ## Technique
 
 - [x] Dépôt GitHub du projet (git@github.com:Jerem7Mc/gayrel.git), poussé à chaque lot de retours.
-- [ ] Compte Client (`socle-wp/outils/compte-client.php`) et Réglages → Livraison client.
+- [x] Compte Client créé (contact@gayrel.fr, rôle Client) : l'e-mail d'activation est parti dans Mailpit (local) → **renvoyer le lien de mot de passe à la mise en ligne** (Comptes → Envoyer la réinitialisation). Agence : Agoravita (coordonnées à compléter dans Réglages → Livraison client).
+- [x] Document de validation des contenus pour le client (Claude Docs « Gayrel — validation des contenus du nouveau site »), à relire puis envoyer.
 - [ ] Mise en ligne : `socle-wp/preparer-mise-en-ligne.sh gayrel`, hébergeur à choisir, puis `deployer.sh`.
 - [ ] Recette par l'utilisateur des derniers retours mobiles (menu, pictos, pastilles) et de la page d'accueil.
 - [ ] Opquast 105 (adresse et téléphone sur toutes les pages) : arbitrage accepté, à reconfirmer avec le client.
