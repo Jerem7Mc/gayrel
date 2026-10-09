@@ -20,4 +20,4 @@
 - [x] Document de validation des contenus pour le client (Claude Docs « Gayrel — validation des contenus du nouveau site »), à relire puis envoyer.
 - [ ] Mise en ligne : `socle-wp/preparer-mise-en-ligne.sh gayrel`, hébergeur à choisir, puis `deployer.sh`.
 - [ ] Recette par l'utilisateur des derniers retours mobiles (menu, pictos, pastilles) et de la page d'accueil.
-- [ ] Opquast 105 (adresse et téléphone sur toutes les pages) : arbitrage accepté, à reconfirmer avec le client.
+- [ ] Opquast 105 (adresse et téléphone sur toutes les pages) : écart maintenu (arbitrage du 09/10/2026), seule erreur restante de `verifier.sh --site gayrel` (Opquast 51/52). Le téléphone est déjà dans l'en-tête ; il ne manque que l'adresse. À reconfirmer avec le client ; si besoin, une ligne en 16 px dans la barre du bas du pied (`patterns/pied-gayrel.php`, style `.g-pied__coordonnees` déjà prévu).
