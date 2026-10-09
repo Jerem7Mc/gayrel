@@ -221,18 +221,61 @@ body { overflow-x: clip; }
 	.g-entete .wp-block-navigation__responsive-container:not(.hidden-by-default):not(.is-menu-open) { display: none !important; }
 	.g-entete .wp-block-navigation { padding: 0; }
 }
+/* Mobile : logo à gauche ; à droite, pictos téléphone et « Nous contacter » puis le bouton du menu.
+   Devis, LinkedIn, le numéro en clair et Nous contacter sont aussi dans le panneau du menu. */
 @media (max-width: 899px) {
-	.g-entete { padding: 12px 12px 0; align-items: center; }
-	.g-entete__outils .g-entete__tel { display: none; }
-	.g-entete__outils:not(:has(> :not(.g-entete__tel):not(.wp-block-social-links):not(.g-entete__devis))) { display: none; }
+	.g-entete { padding: 12px 12px 0; align-items: center; justify-content: flex-start; gap: 8px; }
+	.g-entete > .wp-block-group { display: contents; }
+	.g-entete .wp-block-site-logo { order: 1; margin-right: auto !important; }
+	.g-entete__droite > * { order: 2; }
+	.g-entete .g-nav { order: 3; }
 	.g-pastille { height: 54px; }
-	.g-contact .wp-block-button__link { min-height: 54px; height: 54px; font-size: 1.125rem; }
+	.g-entete__outils { padding: 4px; }
+	.g-entete__devis, .g-entete .wp-block-social-links { display: none; }
+	/* pictos seuls : le texte reste le nom accessible du lien */
+	.g-entete__tel a { width: 46px; padding: 0; gap: 0; justify-content: center; }
+	.g-contact .wp-block-button__link { min-height: 54px; height: 54px; width: 54px; padding: 0; gap: 0; justify-content: center; }
+	.g-entete .g-texte-picto { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+	.g-entete .g-nav { padding: 4px; }
 }
 @media (max-width: 479px) {
-	.g-entete .g-contact { display: none; }
 	.g-entete .wp-block-site-logo img { width: 120px; min-width: 120px; }
 	.g-entete .wp-block-site-logo a { min-height: 33px; }
 }
+@media (max-width: 374px) {
+	.g-entete .g-contact { display: none; } /* reste dans le menu */
+}
+/* Panneau du menu (sous 1440 px) : ouverture et fermeture animées (fondu + glissement, entrées en cascade) */
+@media (max-width: 1439px) and (prefers-reduced-motion: no-preference) {
+	.g-entete .wp-block-navigation__responsive-container {
+		transition: opacity .4s ease, transform .5s cubic-bezier(.2, .7, .2, 1), display .5s allow-discrete, overlay .5s allow-discrete;
+	}
+	.g-entete .wp-block-navigation__responsive-container:not(.is-menu-open) { opacity: 0; transform: translateY(-24px); }
+	.g-entete .wp-block-navigation__responsive-container.is-menu-open { opacity: 1; transform: none; }
+	@starting-style {
+		.g-entete .wp-block-navigation__responsive-container.is-menu-open { opacity: 0; transform: translateY(-24px); }
+	}
+	.g-entete .is-menu-open .wp-block-navigation-item { animation: g-entree-menu .55s cubic-bezier(.2, .7, .2, 1) backwards; }
+	.g-entete .is-menu-open .wp-block-navigation-item:nth-child(2) { animation-delay: .04s; }
+	.g-entete .is-menu-open .wp-block-navigation-item:nth-child(3) { animation-delay: .08s; }
+	.g-entete .is-menu-open .wp-block-navigation-item:nth-child(4) { animation-delay: .12s; }
+	.g-entete .is-menu-open .wp-block-navigation-item:nth-child(5) { animation-delay: .16s; }
+	.g-entete .is-menu-open .wp-block-navigation-item:nth-child(6) { animation-delay: .2s; }
+	.g-entete .is-menu-open .wp-block-navigation-item:nth-child(7) { animation-delay: .24s; }
+	.g-entete .is-menu-open .wp-block-navigation-item:nth-child(8) { animation-delay: .28s; }
+	.g-entete .is-menu-open .wp-block-navigation-item:nth-child(9) { animation-delay: .32s; }
+}
+@keyframes g-entree-menu { from { opacity: 0; transform: translateY(16px); } }
+/* Panneau : téléphone et LinkedIn avec leur picto, séparés des pages par un trait */
+.g-entete .is-menu-open .g-menu-tel { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--wp--preset--color--trait); }
+.g-entete .is-menu-open :is(.g-menu-tel, .g-menu-linkedin) .wp-block-navigation-item__content { gap: 12px; font-size: 1.25rem; }
+.g-entete .is-menu-open :is(.g-menu-tel, .g-menu-linkedin) .wp-block-navigation-item__content::before {
+	content: ""; width: 24px; height: 24px; flex: none; background: var(--wp--preset--color--accent);
+	-webkit-mask: url("../icones/telephone.svg") center / 22px auto no-repeat; mask: url("../icones/telephone.svg") center / 22px auto no-repeat;
+}
+.g-entete .is-menu-open .g-menu-tel .wp-block-navigation-item__content::before { transform: rotate(-120deg); }
+.g-entete .is-menu-open .g-menu-linkedin .wp-block-navigation-item__content::before { -webkit-mask-image: url("../icones/linkedin.svg"); mask-image: url("../icones/linkedin.svg"); -webkit-mask-size: 20px; mask-size: 20px; }
+.g-entete .is-menu-open :is(.g-menu-tel, .g-menu-linkedin) .wp-block-navigation-item__content:is(:hover, :focus-visible)::before { background: currentColor; }
 /* Entrées du menu réservées au panneau mobile (Devis, Nous contacter) */
 .g-entete .wp-block-navigation__responsive-container:not(.is-menu-open) .g-seulement-mobile { display: none; }
 
@@ -336,9 +379,10 @@ body { overflow-x: clip; }
    2. la photo se rétracte dans son cadre arrondi et le mot GAYREL monte de derrière le bâtiment ;
    3. ensemble : l'en-tête descend du haut, le titre, l'accroche et les deux accès montent du bas. */
 @media (prefers-reduced-motion: no-preference) {
-	.g-hero { animation: g-cadre 1s .6s cubic-bezier(.65, 0, .25, 1) both; }
+	.g-hero { animation: g-cadre 1s .6s cubic-bezier(.65, 0, .25, 1) backwards; }
 	.g-hero__marque { animation: g-marque 1.2s .75s cubic-bezier(.3, 0, .2, 1) both; }
-	.home .wp-site-blocks > header.wp-block-template-part { animation: g-descend .9s 2s cubic-bezier(.2, .7, .2, 1) both; }
+	/* « backwards » et non « both » : une transformation maintenue après l'animation enfermerait le panneau du menu (position fixe) dans l'en-tête */
+	.home .wp-site-blocks > header.wp-block-template-part { animation: g-descend .9s 2s cubic-bezier(.2, .7, .2, 1) backwards; }
 	.g-hero h1 .g-ligne > span { animation: g-monte .9s 2s cubic-bezier(.2, .7, .2, 1) both; }
 	.g-hero__accroche { animation: g-glisse .9s 2s cubic-bezier(.2, .7, .2, 1) both; }
 	.g-hero__acces > * { animation: g-surgit .9s 2s cubic-bezier(.2, .7, .2, 1) both; }
@@ -365,7 +409,7 @@ body { overflow-x: clip; }
 @media (max-width: 640px) {
 	.g-hero__acces { grid-template-columns: 1fr; gap: 8px; }
 	.g-acces a { min-height: 96px; }
-	.g-acces a::after { width: 36px; height: 36px; }
+	.g-acces a::after { width: 36px; height: 36px; --g-f-repos: 30px; --g-f-survol: 30px; } /* masque à la taille de la boîte : la flèche était rognée */
 	.g-hero__marque { top: 18%; }
 }
 
@@ -467,16 +511,17 @@ body { overflow-x: clip; }
 .g-projets {
 	position: relative;
 	margin: var(--g-82) var(--g-marge) var(--g-106) !important;
-	padding: 0 0 clamp(64px, 8vw, 160px) !important;
+	/* maquette : liste à 776 px du bord gauche, 1000 px de large, 96 px de marge à droite (section de 1872 px) */
+	padding: 0 clamp(24px, 5.13vw, 96px) clamp(64px, 8vw, 160px) 0 !important;
 	background: var(--wp--preset--color--fond-2);
 	border-radius: var(--g-rayon);
 	max-width: none !important;
-	display: grid !important; grid-template-columns: 41.5% minmax(0, 1000px); column-gap: 0;
+	display: grid !important; grid-template-columns: minmax(41.5%, 1fr) minmax(0, 1000px); column-gap: 0;
 }
 .g-projets > * { margin: 0 !important; }
 .g-projets__geant {
 	grid-column: 1 / -1; grid-row: 1;
-	position: relative; align-self: start;
+	position: sticky; top: 0; align-self: start; /* reste visible, poussé hors du cadre à l'arrivée de la dernière carte (accueil.js) */
 	padding: 11px 0 0 10px;
 	color: var(--wp--preset--color--fond);
 	white-space: normal;
@@ -484,14 +529,18 @@ body { overflow-x: clip; }
 }
 .g-projets__liste { grid-column: 2; grid-row: 1; padding-top: clamp(360px, 44vw, 848px) !important; position: relative; } /* sans z-index : le bouton passe au-dessus du dégradé */
 .g-projets h2 { font-size: 2rem; color: var(--wp--preset--color--nuit); margin: 0 !important; padding: 8px 0 16px; position: sticky; top: calc(clamp(24px, 20vh, 226px) - 56px); z-index: 1; background: var(--wp--preset--color--fond-2); }
-.g-projets h2 { transition: opacity .35s ease, transform .35s ease; }
-/* la dernière réalisation arrive : le titre s'efface (assets/js/realisations.js) */
-.g-projets--fin h2 { opacity: 0; transform: translateY(-16px); }
-.g-projets .wp-block-post-template { display: grid; gap: clamp(64px, 11vw, 220px); }
+.g-projets .wp-block-post-template { display: grid; gap: clamp(0px, calc(11vw - 148px), 72px); }
 .g-projets .wp-block-post { --g-i: 0; position: sticky; top: calc(clamp(24px, 20vh, 226px) + var(--g-i) * 64px); background: var(--wp--preset--color--fond-2); }
 .g-projets .wp-block-post:nth-child(2) { --g-i: 1; }
 .g-projets .wp-block-post:nth-child(3) { --g-i: 2; }
 .g-projets .wp-block-post:nth-child(4) { --g-i: 3; }
+/* Fin de l'empilement : la dernière carte se pose à sa place (pause --g-pause), le bouton monte jusqu'à elle puis la
+   pousse par-dessus les autres ; elle pousse enfin le titre (accueil.js). Sa marge basse réserve la place du bouton
+   (une carte collante garde sa boîte de marge dans la liste), la liste se prolonge de la pause. */
+.g-projets { --g-ecart-bouton: clamp(48px, 6vw, 96px); --g-bouton-h: 52px; --g-pause: 35vh; }
+/* même marge pour toutes : les cartes du dessous partent avec la dernière, cachées derrière elle */
+.g-projets .wp-block-post { margin-bottom: calc(var(--g-ecart-bouton) + var(--g-bouton-h)) !important; }
+.g-projets .wp-block-post-template::after { content: ""; height: var(--g-pause); }
 /* clavier : la carte qui a le focus passe devant celle qui l'empile (RGAA 10.7) */
 .g-projets .wp-block-post:focus-within { z-index: 4; position: relative; top: auto; } /* décollée : elle défile jusqu'à être visible (jamais sous le bandeau cookies) */
 .g-projets::after {
@@ -504,13 +553,13 @@ body { overflow-x: clip; }
 .g-carte-projet { display: flex; flex-direction: column; gap: 16px; position: relative; }
 .g-carte-projet .wp-block-post-featured-image { margin: 0; aspect-ratio: 1224 / 632; overflow: hidden; border-radius: var(--g-rayon); }
 .g-carte-projet .wp-block-post-featured-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
-.g-carte-projet .wp-block-post-title { font-size: 1.25rem; font-weight: 400; line-height: 1; margin: 0; letter-spacing: 0; text-transform: none; }
+.g-carte-projet .wp-block-post-title { font-size: 1.25rem; font-weight: 300; /* Manrope Light de la maquette */ line-height: 1; margin: 0; letter-spacing: 0; text-transform: none; }
 .g-carte-projet .wp-block-post-title a {
 	display: flex; align-items: center; justify-content: space-between; gap: 16px;
 	min-height: 32px; text-decoration: none; color: var(--wp--preset--color--encre);
 }
 .g-carte-projet .wp-block-post-title a::after {
-	--g-f-repos: 8px; --g-f-survol: 20px;
+	--g-f-repos: 24px; --g-f-survol: 24px; /* même flèche (24 px, maquette) : celle du survol pousse celle du repos */
 	content: ""; width: 24px; height: 24px; flex: none; background: var(--wp--preset--color--accent);
 	-webkit-mask-image: url("../icones/fleche-grande.svg"), url("../icones/fleche-grande.svg"); mask-image: url("../icones/fleche-grande.svg"), url("../icones/fleche-grande.svg");
 	-webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
@@ -536,12 +585,16 @@ body { overflow-x: clip; }
 	pointer-events: none;
 }
 .g-carte-projet:hover .wp-block-post-featured-image::after { opacity: 1; transform: translate(-50%, -50%) rotate(-15deg) scale(1); }
-.g-projets .wp-block-buttons { margin-top: clamp(48px, 6vw, 96px) !important; }
+.g-projets .wp-block-buttons { margin-top: calc(-1 * var(--g-bouton-h)) !important; min-height: var(--g-bouton-h); align-items: flex-end; }
 @media (max-width: 900px) {
 	.g-projets { grid-template-columns: 1fr; padding: 24px 16px 48px !important; }
 	.g-projets__geant { position: static; font-size: clamp(3.25rem, 14vw, 6rem); padding: 0; }
 	.g-projets__liste { grid-column: 1; grid-row: 2; padding-top: 32px !important; }
 	.g-projets .wp-block-post, .g-projets h2 { position: static; }
+	.g-projets .wp-block-post { margin-bottom: 0 !important; }
+	.g-projets .wp-block-post-template { gap: 48px; }
+	.g-projets .wp-block-post-template::after { display: none; }
+	.g-projets .wp-block-buttons { margin-top: 40px !important; min-height: 0; }
 	.g-projets::after { display: none; }
 }
 
@@ -862,7 +915,9 @@ body { overflow-x: clip; }
 .socle-form__envoyer:active { background: var(--wp--preset--color--encre); border-color: var(--wp--preset--color--encre); }
 
 /* Plan d'accès Google Maps en façade (socle-base, [socle_plan]) */
-.socle-plan { --socle-plan-rayon: var(--g-rayon); background: repeating-linear-gradient(108deg, transparent 0 calc(33.3% - 1px), rgba(7, 17, 94, .08) calc(33.3% - 1px) 33.3%), var(--wp--preset--color--fond-2); color: var(--wp--preset--color--encre); }
+.socle-plan { --socle-plan-rayon: var(--g-rayon); --socle-plan-repere: var(--wp--preset--color--accent); background: repeating-linear-gradient(108deg, transparent 0 calc(33.3% - 1px), rgba(7, 17, 94, .08) calc(33.3% - 1px) 33.3%), var(--wp--preset--color--fond-2); color: var(--wp--preset--color--encre); }
+.socle-plan.socle-plan--image { background: var(--wp--preset--color--fond-2); }
+.socle-plan--image .socle-plan__facade { color: var(--wp--preset--color--encre); }
 .socle-plan__afficher { background: var(--wp--preset--color--accent) !important; border-color: var(--wp--preset--color--accent) !important; color: var(--wp--preset--color--sur-accent) !important; font-size: 1.125rem !important; }
 .socle-plan__afficher:hover { background: var(--wp--preset--color--roi) !important; border-color: var(--wp--preset--color--roi) !important; }
 
@@ -898,3 +953,16 @@ body { overflow-x: clip; }
 
 /* Liens dans les textes des modèles (404…) : zone de clic ≥ 32 px comme dans le contenu des pages */
 :is(.g-bloc__texte, .g-duo__texte, .g-texte, .g-page-entete__intro) p a { display: inline-flex; align-items: center; min-height: 32px; }
+
+/* =========================================================
+   Écrans tactiles et mobile : pas d'animation au survol ou au toucher (rideaux, bandes, flèches, zoom),
+   l'état final s'affiche directement ; les indications révélées au survol sont visibles d'emblée.
+   ========================================================= */
+@media (hover: none), (max-width: 899px) {
+	.wp-site-blocks :is(a, button, .wp-block-button__link, .g-carte-projet img),
+	.wp-site-blocks :is(a, button, .wp-block-button__link)::before,
+	.wp-site-blocks :is(a, button, .wp-block-button__link)::after { transition: none !important; }
+	.g-carte-projet:hover .wp-block-post-featured-image img { transform: none; }
+	/* pastille « Voir le projet » toujours affichée */
+	.g-carte-projet .wp-block-post-featured-image::after { opacity: 1; transform: translate(-50%, -50%) rotate(-15deg) scale(1); }
+}

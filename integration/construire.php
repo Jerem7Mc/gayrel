@@ -644,6 +644,9 @@ foreach ( $entetes as $pid => [ $mot, $img ] ) {
 }
 update_option( 'gayrel_image_realisations', $photo( 'safran.jpg' ) );
 update_option( 'gayrel_image_404', $photo( 'aerocampus-blagna-zoom.jpg' ) );
+// Fond du plan d'accès ([socle_plan]) : carte OpenStreetMap locale teintée, générée par
+// socle-wp/outils/carte-statique.php --lat=43.901481 --lon=1.876989 --teinte=#d3d5e4 --force=0.5
+update_option( 'socle_plan_image', g_media( "$racine/maquette/carte/plan-gayrel.jpg", '', 'plan-acces-gayrel' ) );
 // Plan du site : pages légales en fin de liste, rubrique Réalisations après Actualités (socle-realisations)
 foreach ( [ $id_ml => 8, $id_pc => 9, $id_pl => 10 ] as $pid => $ordre ) {
 	wp_update_post( [ 'ID' => $pid, 'menu_order' => $ordre ] );
@@ -656,7 +659,9 @@ update_option( 'page_for_posts', $id_actus );
 $lien = fn( $titre, $id ) => sprintf( '<!-- wp:navigation-link {"label":"%s","type":"page","id":%d,"url":"%s","kind":"post-type"} /-->', esc_attr( $titre ), $id, esc_url( get_permalink( $id ) ) );
 $libre = fn( $titre, $url ) => sprintf( '<!-- wp:navigation-link {"label":"%s","url":"%s","kind":"custom"} /-->', esc_attr( $titre ), esc_attr( $url ) );
 $mobile    = fn( $html ) => str_replace( '"kind":"post-type"}', '"kind":"post-type","className":"g-seulement-mobile"}', $html ); // entrées du seul panneau mobile
-$principal = [ $lien( 'L’entreprise', $id_entreprise ), $lien( 'Habitat', $id_habitat ), $lien( 'Bâtiment', $id_batiment ), $lien( 'Showroom', $id_showroom ), $lien( 'Actualités', $id_actus ), $mobile( $lien( 'Devis', $id_devis ) ), $mobile( $lien( 'Nous contacter', $id_contact ) ) ];
+$libre_mobile = fn( $titre, $url, $classe ) => sprintf( '<!-- wp:navigation-link {"label":"%s","url":"%s","kind":"custom","className":"g-seulement-mobile %s"} /-->', esc_attr( $titre ), esc_attr( $url ), $classe );
+$principal = [ $lien( 'L’entreprise', $id_entreprise ), $lien( 'Habitat', $id_habitat ), $lien( 'Bâtiment', $id_batiment ), $lien( 'Showroom', $id_showroom ), $lien( 'Actualités', $id_actus ), $mobile( $lien( 'Devis', $id_devis ) ), $mobile( $lien( 'Nous contacter', $id_contact ) ),
+	$libre_mobile( '05 63 81 42 42', 'tel:+33563814242', 'g-menu-tel' ), $libre_mobile( 'Gayrel sur LinkedIn', 'https://fr.linkedin.com/company/gayrel-sas', 'g-menu-linkedin' ) ];
 $pied      = [ $lien( 'L’entreprise', $id_entreprise ), $lien( 'Habitat', $id_habitat ), $lien( 'Bâtiment', $id_batiment ), $libre( 'Réalisations', '/realisations/' ), $lien( 'Showroom', $id_showroom ), $lien( 'Actualités', $id_actus ), $lien( 'Nous contacter', $id_contact ) ];
 $legal     = [ $lien( 'Mentions légales', get_page_by_path( 'mentions-legales' )->ID ), $libre( 'Gestion des cookies', '#gestion-cookies' ), $lien( 'Politique de confidentialité', get_page_by_path( 'politique-de-confidentialite' )->ID ), $lien( 'Plan du site', get_page_by_path( 'plan-du-site' )->ID ) ];
 $menus = [ 'Menu principal' => $principal, 'Pied de page' => $pied, 'Informations légales' => $legal ];

@@ -80,7 +80,7 @@
 						{
 							"fontFamily": "Manrope",
 							"fontStyle": "normal",
-							"fontWeight": "400 800",
+							"fontWeight": "200 800",
 							"fontDisplay": "swap",
 							"src": [
 								"file:./assets/fonts/manrope-latin-ext.woff2"
@@ -90,7 +90,7 @@
 						{
 							"fontFamily": "Manrope",
 							"fontStyle": "normal",
-							"fontWeight": "400 800",
+							"fontWeight": "200 800",
 							"fontDisplay": "swap",
 							"src": [
 								"file:./assets/fonts/manrope-latin.woff2"
@@ -107,7 +107,7 @@
 						{
 							"fontFamily": "Manrope",
 							"fontStyle": "normal",
-							"fontWeight": "400 800",
+							"fontWeight": "200 800",
 							"fontDisplay": "swap",
 							"src": [
 								"file:./assets/fonts/manrope-latin-ext.woff2"
@@ -117,7 +117,7 @@
 						{
 							"fontFamily": "Manrope",
 							"fontStyle": "normal",
-							"fontWeight": "400 800",
+							"fontWeight": "200 800",
 							"fontDisplay": "swap",
 							"src": [
 								"file:./assets/fonts/manrope-latin.woff2"
