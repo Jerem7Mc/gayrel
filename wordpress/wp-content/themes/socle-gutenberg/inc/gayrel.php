@@ -126,3 +126,23 @@ add_filter( 'socle_guide_sections', function ( $sections ) {
 	$debut = array_slice( $sections, 0, 2, true );
 	return $debut + $projet + array_slice( $sections, 2, null, true );
 } );
+
+// Grands mots décoratifs : écrits par CSS (attribut data-mot + ::before) plutôt qu'en texte, pour qu'aucun outil ne les
+// prenne pour du contenu (contraste « insuffisant » voulu : même couleur que le fond). Ils restent masqués aux lecteurs
+// d'écran ; l'éditeur, lui, garde le texte (blocs HTML lisibles). Les <br> deviennent des retours à la ligne.
+function gayrel_geant_en_attribut( $html ) {
+	if ( ! str_contains( $html, 'g-geant' ) ) {
+		return $html;
+	}
+	return preg_replace_callback(
+		'#<p class="(g-geant[^"]*)" aria-hidden="true"((?: style="[^"]*")?)>(.+?)</p>#s',
+		function ( $m ) {
+			$mot = trim( wp_strip_all_tags( preg_replace( '#<br\s*/?>#i', "\n", $m[3] ) ) );
+			return '<p class="' . $m[1] . '" aria-hidden="true"' . $m[2] . ' data-mot="' . esc_attr( $mot ) . '"></p>';
+		},
+		$html
+	);
+}
+add_filter( 'render_block', function ( $html, $bloc ) {
+	return is_admin() || defined( 'REST_REQUEST' ) ? $html : gayrel_geant_en_attribut( $html );
+}, 20, 2 );

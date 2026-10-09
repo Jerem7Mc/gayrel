@@ -19,6 +19,7 @@
 body { overflow-x: clip; }
 
 /* ---------- Titres décoratifs géants (aria-hidden, contraste non requis) ---------- */
+.g-geant[data-mot]::before { content: attr(data-mot); white-space: pre; } /* texte posé par inc/gayrel.php */
 .g-geant {
 	font-family: var(--wp--preset--font-family--titre);
 	font-weight: 500;
@@ -999,3 +1000,5 @@ body { overflow-x: clip; }
 		transform: rotate(-15deg); box-shadow: 0 4px 12px rgba(7, 17, 94, .25);
 	}
 }
+
+
