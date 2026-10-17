@@ -5,6 +5,8 @@ Refonte de gayrel.fr (menuiserie et façades aluminium, Gaillac) en WordPress + 
 1920 px) — https://www.figma.com/design/93P32qqGyYXcjjiOaD84nH/Gayrel. Historique et décisions : **CONTEXTE.md** ;
 backlog : **A-FAIRE.md**.
 
+Modèles et exécution (Opus 5.5 : plans et revues ; Sonnet 5.5 : exécution inline, sans sous-agent) : voir `~/Documents/Projects/CLAUDE.md`.
+
 ## Règles permanentes
 
 - Tout en **français** (contenus, back-office, code, commits).
